@@ -61,7 +61,7 @@ while True:
         print (menuText)
 
     elif command == "2":
-        jmID = input ("请输入禁漫车：")#添加批量下载 空格分割jm号
+        jmID = input ("请输入禁漫车：")#todo-添加批量下载 空格分割jm号
         print ("\n下载即将开始...")
         try:
             jm.download_album (jmID)
