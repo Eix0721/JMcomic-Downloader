@@ -25,7 +25,7 @@ cd JMcomic-Downloader
 
 ### 2. 安装依赖
 每次运行时，脚本会自动检测当前解释器是否安装了依赖模块：  
-- __ [JMComic Crawler Python](https://github.com/hect0x7/JMComic-Crawler-Python)__
+- [JMComic Crawler Python](https://github.com/hect0x7/JMComic-Crawler-Python)
 - [pyYAML](https://github.com/yaml/pyyaml)  
 
 如未安装，程序会提示是否同意自动安装。
