@@ -1,7 +1,5 @@
-"""
-jmcomic模块使用文档：https://jmcomic.readthedocs.io/zh-cn/latest/tutorial/0_common_usage/
-To-Do：添加下载前显示本子标题；YAML文件配置；Github README页面
-"""
+# Copyright (c) 2025 Eix0721
+# Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 import os,time,sys
 #仅开发时使用↓

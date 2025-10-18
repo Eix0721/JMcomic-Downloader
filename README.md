@@ -1,7 +1,7 @@
 # JMcomic Downloader
 
 一个基于 [JMComic Crawler Python](https://github.com/hect0x7/JMComic-Crawler-Python) 的简易命令行本子下载工具。  
-本项目支持通过输入禁漫车号，批量下载漫画，并**计划支持**YAML 配置下载 与更多功能。  
+本项目支持通过输入禁漫车号，批量下载漫画，并计划支持YAML 配置下载与更多功能。  
 
 ---
 
@@ -25,11 +25,11 @@ cd JMcomic-Downloader
 
 ### 2. 安装依赖
 每次运行时，脚本会自动检测当前解释器是否安装了依赖模块：  
-- __ [JMComic Crawler Python](https://github.com/hect0x7/JMComic-Crawler-Python)__
+- [JMComic Crawler Python](https://github.com/hect0x7/JMComic-Crawler-Python)
 - [pyYAML](https://github.com/yaml/pyyaml)  
 
 如未安装，程序会提示是否同意自动安装。
-如同意，将自动执行：
+同意安装，将自动执行：
 ```bash
 #{sys.excutable} 为当前Python解释器目录
 #{moduleName} 为缺失的模块名
@@ -44,9 +44,6 @@ pip install pyyaml
 ```bash
 python JMdownloader.py
 ```
-
-- 此外，您也可以手动下载 [main\JMdownloader.py](https://github.com/Eix0721/JMcomic-Downloader/blob/main/main/JMdownloader.py) 源文件快速运行
-
 ---
 
 ## 🕹️ 使用方法
@@ -66,9 +63,9 @@ python JMdownloader.py
 ----------------------------------------
 ```
 
-您可以输入 `2` → 再输入 `350234 350235`  
-即可下载两个禁漫车对应的漫画。
-目前，下载漫画会在所处目录中创建与漫画同名的文件，并将下载的漫画保存其中。此外，保存的格式为`.webp`，文件名为`<页数>.webp`。后续将支持更改保存格式、命名方式等功能
+您可以输入 `2` → 再输入 `350234 114514`（使用空格隔开）
+即可下载两个对应的漫画。
+目前，下载漫画会在所处目录中创建与漫画同名的文件，并将下载的漫画保存其中。此外，保存的格式为`.webp`，文件名为`<页码>.webp`。后续将支持更改保存格式、命名方式等功能
 
 ---
 
@@ -83,9 +80,15 @@ python JMdownloader.py
   ⚙️ 未来将用于配置文件支持 
 
 感谢以上项目的开发者与贡献者为开源社区作出的奉献！
-###### - **此外 _JMcomic_ 也是一款十分优秀的漫画软件，关爱禁漫娘，请不要一次性下载过多本子！**
----
+**__JMcomic__ 也是一款十分优秀的漫画软件，关爱禁漫娘，请不要一次性下载过多本子!**
 
+---
+## 🔔 开源声明
+本项目采用 [MIT 许可证](https://github.com/Eix0721/JMcomic-Downloader?tab=MIT-1-ov-file) 开源。  
+版权所有 © 2025  Eix0721
+
+---
 ## 📌 项目状态
 本项目目前仍在**初步开发阶段**，计划逐步完善 **配置功能、本子标题显示、YAML 配置支持** 等特性。  
+本人是第一次开发项目，不论是对git、github的使用，还是commit和代码质量，都会有有诸多不妥，请谅解😥。
 欢迎提交 Issue 或 PR 参与改进！  
