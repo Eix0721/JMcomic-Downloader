@@ -130,7 +130,7 @@ def execute_command(command: str) -> None:
     elif command == "0721":  # 触发报错
         raise RuntimeError("这是一个测试异常！")
     else:
-        print (fr"指令不存在，输入“1”以查看菜单")
+        print (f"指令不存在，输入“1”以查看菜单")
 
 
 if __name__ == "__main__":
