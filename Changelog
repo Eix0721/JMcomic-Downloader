@@ -1,0 +1,71 @@
+pre-0.2.2[2025.11.08]
+修复 jm 模块动态导入失败的问题（jm is not defined）
+优化 使用类整理link和text
+新增 jmcomic和pyyaml模块至.scr\module目录
+新增Changelog文件，记录更新日志
+删除 build_exe.py，jmcomic_downloader.py可兼顾运行和编译
+删除 exe/py版本标识
+
+
+【以下为添加Changelog前的更新，整理自Commits】
+
+Commit a981756 [2025.11.01]
+Style changed
+1.代码结构调整,将主要功能模块移至scr/module目录，简化主脚本
+2.风格调整：将小驼峰全部更改为snake_case，规范入口函数，规范模块导入，规范长字符串拼接
+3.添加requirements.txt
+4.jmcomic_downloaderToEXEver.py更名为build_exe.py
+5.scr/icon.ico迁移至assets目录
+6.修改命令无效的提示
+7.修改部分注释
+8.优化异常提示
+9.动态导入模块时，回车可直接进入默认项（Y-同意）
+
+Commit 132c564 [2025.10.30]
+Update README.md
+
+Commit 91edbfb [2025.10.26]
+Fix&Docs
+修改 README.md
+修改 主程序文件名为jmcomic_downloader.py
+修改文件夹名称及文件结构
+新增 jmcomic_downloaderToEXEver.py 文件，去除动态导入功能以用于编译为.exe文件
+新增 res.py 文件，将模块检查、动态导入、固定文本等与主程序分离
+新增 图标文件（临时使用）
+新增 程序运行时的报错提示，包括异常类型及异常信息
+新增 隐藏的手动报错功能，指令为0721
+
+Commit a565f97 [2025.10.18]
+1.为源文件、README.md添加版权声明
+2.修改“关于”文本
+3.修改README.md
+
+Commit 52e5ae7 [2025.10.18]
+添加MIT许可证
+
+Commit 10582ad [2025.10.03]
+Update README.md
+
+Commit 6f5e5bf [2025.10.03]
+添加README.md文件
+
+Commit 5687139 [2025.10.03]
+优化 模块检测与安装功能对模块动态导入失败的处理逻辑。
+优化 模块安装时，支持模块名称与包名称分离（如 pyYAML 的导入名为 yaml）。
+优化 错误提示信息，如模块导入失败、下载失败等。
+优化 菜单内容，增加部分功能描述。
+优化 程序的捕获能力。
+修复 下载等基础功能潜在的问题
+新增 关于页面
+新增 模块检测检测 jmcomic 和 pyYAML 模块是否正确导入。
+新增 批量下载功能，使用空格分隔多个禁漫车以批量下载本子。
+新增 支持逐字打印文本（用于关于页面和菜单页面）。
+
+Commit 9f7f0c2 [2025.10.01]
+优化代码结构与逻辑
+优化模块检测与错误处理能力，并提升其泛用性
+优化模块下载成功/失败提示，可精准定位错误原因
+添加本子下载成功/失败提示，禁漫车错误时不再会导致程序卡死
+添加指令错误提示
+添加pyYAML模块，未来用于下载配置功能
+添加“检测”功能，可手动检测第三方模块是否导入成功（虽然没什么用）
