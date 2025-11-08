@@ -6,7 +6,11 @@ pre-0.2.2[2025.11.08]
 删除 build_exe.py，jmcomic_downloader.py可兼顾运行和编译
 删除 exe/py版本标识
 ·Update README.md
-
+·将.scr文件夹正确重命名为.scr
+将module文件夹重命名为libs
+新增 正则表达式检测禁漫车是否仅为数字和空格，减少输入错误时的等待时间
+移动 res.py中的文本至text.py，
+移动 主程序的main函数至core.py
 
 【以下为添加Changelog前的更新，整理自Commits】
 
