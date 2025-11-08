@@ -1,10 +1,11 @@
 pre-0.2.2[2025.11.08]
-修复 jm 模块动态导入失败的问题（jm is not defined）
+·修复 jm 模块动态导入失败的问题（jm is not defined）
 优化 使用类整理link和text
 新增 jmcomic和pyyaml模块至.scr\module目录
 新增Changelog文件，记录更新日志
 删除 build_exe.py，jmcomic_downloader.py可兼顾运行和编译
 删除 exe/py版本标识
+·Update README.md
 
 
 【以下为添加Changelog前的更新，整理自Commits】

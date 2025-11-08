@@ -1,2 +1,0 @@
-jmcomic==2.6.9
-PyYAML==6.0.3
