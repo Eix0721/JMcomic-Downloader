@@ -8,6 +8,10 @@ pre-0.3.0[2025.11.12]
 新增 下载前确认提示
 新增 关于文本中的InquirerPy模块信息及链接
 
+修复 因core.py中line 31多余global引起打包失败的问题 
+修复 InquirerPy模块导入方式导致无法运行的问题
+新增 src\libs下的__init__.py
+
 pre-0.2.2[2025.11.08]
 ·修复 jm 模块动态导入失败的问题（jm is not defined）
 优化 使用类整理link和text

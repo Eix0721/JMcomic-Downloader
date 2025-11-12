@@ -8,6 +8,7 @@ import re
 from libs import jmcomic as jm
 from libs import yaml
 from libs import InquirerPy
+from libs.InquirerPy import inquirer
 from libs.text import text
 
 
@@ -28,7 +29,6 @@ def initialize () -> bool:
 
 
 def jmcomic_download() -> None:
-    global 
     jm_ids = InquirerPy.inquirer.text(  # type: ignore
         message="请输入要下载的JMcomic车号（多个车号用空格分隔）：",
     ).execute()
