@@ -1,8 +1,13 @@
+from ast import In
+
 
 class link:
     jm = "https://github.com/hect0x7/JMComic-Crawler-Python"  # JMcomic
     yaml = "https://github.com/yaml/pyyaml"  # pyYAML
+    InquirerPy = "https://github.com/kazhala/InquirerPy" # InquirerPy
     pj = "https://github.com/Eix0721/JMcomic-Downloader"
+    
+
 class text:
     menu = f"""
 \n\n{"-" * 18}菜单{"-" * 18}
@@ -32,6 +37,9 @@ class text:
 **pyYAML
 描述：未来将用于配置文件支持
 地址：{link.yaml}
+**InquirerPy
+描述：用于构建交互式命令行界面
+地址：{link.InquirerPy}
 
 感谢以上项目的开发者与贡献者为开源社区作出的奉献！
 JMcomic 也是一款十分优秀的漫画软件，关爱禁漫娘，请不要一次性下载过多本子!

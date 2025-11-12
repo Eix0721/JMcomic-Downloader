@@ -1,3 +1,13 @@
+pre-0.3.0[2025.11.12]
+移动 res.py内的函数至core.py
+删除 res.py
+删除 动态导入有关代码
+优化 相对导入方式
+修改 README.md
+新增 菜单、设置页面的交互式命令行界面（使用InquirerPY模块实现）
+新增 下载前确认提示
+新增 关于文本中的InquirerPy模块信息及链接
+
 pre-0.2.2[2025.11.08]
 ·修复 jm 模块动态导入失败的问题（jm is not defined）
 优化 使用类整理link和text

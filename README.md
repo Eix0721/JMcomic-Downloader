@@ -15,9 +15,10 @@
 - [x] 支持输入单个或多个禁漫车号（以空格分隔）进行批量下载  
 - [x] 自动检测并安装依赖模块（`pre-0.2.2`后已取消[#Commit10c4446](https://github.com/Eix0721/JMcomic-Downloader/commit/10c4446773b0aac7092a72878492769022679078)）
 - [x] 关于及鸣谢页面
-- [x] 无Python环境运行（可在release中下载`.exe`文件）
+- [x] 无Python环境运行（可在[release](https://github.com/Eix0721/JMcomic-Downloader/releases)中下载`.exe`文件）
 - [x] 隐藏下载日志
 - [x] 代码结构、风格、可读性优化，文件结构优化
+- [x] 基于[InquirerPY](#-致谢)的交互式命令行界面
 - [ ] 下载前显示漫画标题、章节等信息
 - [ ] YAML 文件配置（下载路径、存储格式、指定章节等）
 - [ ] 更完整的设置功能
@@ -27,9 +28,9 @@
 
 
 ## 🚀 安装与运行
-### 🛵即开即用（推荐）：
+### 🛵即开即用 ***（推荐）***：
 下载`-win_amd64`结尾的[压缩文件](https://github.com/Eix0721/JMcomic-Downloader/releases)，解压后双击运行JMcomic Downloader.exe，即可快速使用。
-#### 🚲脚本运行：
+### 🚲脚本运行：
 ##### 1. 克隆仓库或下载压缩包
 克隆仓库
 ```bash
@@ -88,10 +89,13 @@ python jmcomic_downloader.py
 本项目使用以下开源项目：
 
 - **[JMComic Crawler Python](https://github.com/hect0x7/JMComic-Crawler-Python)**  
-  📖 提供漫画下载的核心功能  
+  提供漫画下载的核心功能  
 
 - **[pyYAML](https://github.com/yaml/pyyaml)**  
-  ⚙️ 用于配置文件支持 
+  未来将用于配置文件的支持
+
+- **[InquirerPY](https://github.com/kazhala/InquirerPy)**
+  用于构建交互式命令行界面
 
 感谢以上项目的开发者与贡献者为开源社区作出的奉献！
 > **__JMcomic__ 是一款十分优秀的漫画软件，关爱禁漫娘，请不要一次性下载过多本子!**
