@@ -4,7 +4,7 @@ import sys
 import re 
 import os
 
-from libs import global_style, jmcomic as jm
+from libs import jmcomic as jm
 from libs import yaml
 from libs import InquirerPy
 from libs.InquirerPy import inquirer,utils
