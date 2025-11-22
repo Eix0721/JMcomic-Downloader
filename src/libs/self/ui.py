@@ -1,7 +1,7 @@
-from libs import InquirerPy
-from libs.InquirerPy import inquirer,utils
-from libs.text import text, infurce_style
-global_style = InquirerPy.get_style (infurce_style.all_styles["默认风格"],style_override=True)
+import InquirerPy
+from InquirerPy import inquirer,utils
+from libs.self.text import Text, InterfaceStyles
+global_style = InquirerPy.get_style (InterfaceStyles.all_styles["默认风格"],style_override=True)
 
 def input_text (mesage) -> str:
     output_str = InquirerPy.inquirer.text(  # type: ignore
@@ -37,14 +37,14 @@ def set_style() ->None:
     style_choice = "默认风格"
     while is_keep_going:
         try:
-            style_choices = list(infurce_style.all_styles.keys()) + ["取消"]
+            style_choices = list(InterfaceStyles.all_styles.keys()) + ["取消"]
             style_choice = select_choice ("请选择主题风格：",
                                              style_choices,
                                              default=style_choice)
             if style_choice == "取消":
                 is_keep_going = False
                 return
-            style_args = infurce_style.all_styles[style_choice]
+            style_args = InterfaceStyles.all_styles[style_choice]
             global_style = InquirerPy.get_style (style_args,style_override=True)
         except Exception as err:
             print(f"切换样式时发生错误：{type(err).__name__}:{err}")

@@ -1,14 +1,11 @@
-from email import message
 import traceback
 import time
 import sys
 import re 
-import os
-import libs.ui as ui
+import InquirerPy, jmcomic as jm
 
-from libs import InquirerPy, jmcomic as jm
-from libs import yaml
-from libs.text import text, infurce_style
+from libs.self.text import Text
+import libs.self.ui as ui
 
 
 
@@ -71,7 +68,7 @@ def get_command(option) ->str:
 def execute_command(command: str) ->None:
     global is_show_download_log,global_style
     if command == "详细菜单":
-        print (text.menu)
+        print (Text.menu)
     elif command == "下载漫画":
         jmcomic_download ()
     elif command == "设置选项":
@@ -89,7 +86,7 @@ def execute_command(command: str) ->None:
     elif command == "切换主题":
         ui.set_style()
     elif command == "关于项目":
-        print (text.about)
+        print (Text.about)
     elif command == "退出程序":
         print ("程序即将退出")
         time.sleep (0.2)
@@ -102,7 +99,7 @@ def main():
     if not initialize():
         input("回车以退出程序...")
         return  
-    print (text.menu)
+    print (Text.menu)
     while True:
         try:
             command = get_command("menu")
