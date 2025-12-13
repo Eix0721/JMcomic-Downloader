@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
 class Link:
     jm = "https://github.com/hect0x7/JMComic-Crawler-Python"  # JMcomic
     yaml = "https://github.com/yaml/pyyaml"  # pyYAML
@@ -5,10 +8,11 @@ class Link:
     pj = "https://github.com/Eix0721/JMcomic-Downloader"
     
 
+@dataclass(frozen=True)
 class Text:
     menu = f"""
 \n\n
---------------菜单----------------
+{"菜单":-^36}
 详细菜单：显示此菜单页面
 下载漫画：下载JMcomic漫画
 设置选项：设置文件路径等（开发中）
@@ -16,15 +20,17 @@ class Text:
 关于项目：显示关于页面
 退出程序：退出该程序
 **↑/↓ - 选择 | ENTER - 确认
----------------------------------\n
+{"":-^36}\n
 """
 
     settings = f"""
 \n\n
---------------设置-------------
-日志：关闭下载日志输出
+{"设置":-^36}
+日志：下载日志输出
+设置选项：显示该设置菜单
+退出设置：返回主菜单
 **↑/↓ - 选择 | ENTER - 确认
-------------------------------\n
+{"":-^36}\n
 """
 
     about = f"""
@@ -49,6 +55,8 @@ JMcomic 也是一款十分优秀的漫画软件，
 关爱禁漫娘，请不要一次性下载过多本子!
 """
 
+
+@dataclass(frozen=True)
 class InterfaceStyles:
     all_styles = {
     "默认风格":{
