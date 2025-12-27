@@ -1,9 +1,9 @@
 import InquirerPy
 from InquirerPy import inquirer,utils
-from libs.self.text import Text, InterfaceStyles
+import libs.self.text as text
 
 
-current_style = InquirerPy.get_style (InterfaceStyles.all_styles ["默认风格"], # type: ignore
+current_style = InquirerPy.get_style (text.INTERFACE_STYLES ["默认风格"], # type: ignore no att
                                       style_override = True)
 
 
@@ -14,7 +14,7 @@ def input_text (mesage) -> str:
     ).execute()
     return output_str
 
-def confirm_yes_no (message) -> bool:
+def confirm (message) -> bool:
     choice = InquirerPy.inquirer.select(   # type: ignore
         message=message,
         choices=["确认","取消"],
@@ -23,7 +23,7 @@ def confirm_yes_no (message) -> bool:
     ).execute()
     return choice == "确认"
 
-def select_choice (message,choices,default=None) -> str:
+def select (message,choices,default=None) -> str:
     choice = InquirerPy.inquirer.select(  # type: ignore
                 message = message,
                 choices = choices,
@@ -40,13 +40,13 @@ def set_style() ->None:
     
     while is_keep_going:
         try:
-            style_choices = list(InterfaceStyles.all_styles.keys()) + ["取消"]
-            style_choice = select_choice ("请选择主题风格：",style_choices,
+            style_choices = list(text.INTERFACE_STYLES.keys()) + ["取消"]
+            style_choice = select ("请选择主题风格：",style_choices,
                                           default=style_choice)
             if style_choice == "取消":
                 is_keep_going = False
                 return
-            style_args = InterfaceStyles.all_styles[style_choice]
+            style_args = text.INTERFACE_STYLES[style_choice]
             current_style = InquirerPy.get_style (style_args,style_override=True) # type: ignore
         except Exception as err:
             print(f"切换样式时发生错误：{type(err).__name__}:{err}")
