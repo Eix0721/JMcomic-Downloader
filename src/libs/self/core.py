@@ -51,12 +51,12 @@ def jmcomic_download() -> None:
 
 def setting() -> None:
     global show_download_log
-    command = f"{show_status(show_download_log)}下载日志输出" # 默认选项
+    command = f"{show_status(not show_download_log)}下载日志输出" # 默认选项
     while True:
         command = ui.select (message="请选择设置项：",
                             choices=text.SETTING_SECTIONS,
                             default= command)
-        if command == f"{show_status(show_download_log)}下载日志输出":
+        if command == f"{show_status(not show_download_log)}下载日志输出":
             if show_download_log:
                 jm.disable_jm_log()
                 show_download_log = False
@@ -64,7 +64,7 @@ def setting() -> None:
                 # 如果当前是关闭，则开启
                 jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = True
                 show_download_log = True
-            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(f"{show_status(not show_download_log)}下载日志输出")] = f"{show_status(show_download_log)}下载日志输出"
+            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = f"{show_status(not show_download_log)}下载日志输出"
             print(f"已{show_status(show_download_log)}下载日志输出。\n")   
         elif command == "设置选项":
             print(f"{text.TEXT['settings']}\n")
