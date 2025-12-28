@@ -13,6 +13,7 @@ from libs.self import ui
 from libs.self import text
 from libs.self.config import show_download_log
 
+
 def create_jmcli() -> jm.JmcomicClient: # 初始化并构建 JMcomic 客户端
     return jm.JmModuleConfig.option_class().default().build_jm_client() 
 
@@ -65,6 +66,8 @@ def setting() -> None:
                 # 如果当前是关闭，则开启
                 jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = True
                 show_download_log = True
+            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(
+                                f"{show_status(not show_download_log)}下载日志输出")] = command
             print(f"已{show_status(show_download_log)}下载日志输出。\n")   
         elif command == "设置选项":
             print(f"{text.TEXT['settings']}\n")

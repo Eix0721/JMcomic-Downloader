@@ -12,7 +12,6 @@ def get_sections (orig_text) ->list[str]:
                 sections.append(section)
     return sections
 
-
 LINK = {
     "jm": "https://github.com/hect0x7/JMComic-Crawler-Python",  # JMcomic
     "yaml": "https://github.com/yaml/pyyaml",                   # pyYAML
