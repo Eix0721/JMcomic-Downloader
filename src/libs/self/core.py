@@ -1,6 +1,4 @@
 #标准库
-from calendar import c
-from email import message
 import re                           
 import sys
 import time
@@ -66,8 +64,7 @@ def setting() -> None:
                 # 如果当前是关闭，则开启
                 jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = True
                 show_download_log = True
-            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(
-                                f"{show_status(not show_download_log)}下载日志输出")] = command
+            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(f"{show_status(not show_download_log)}下载日志输出")] = f"{show_status(show_download_log)}下载日志输出"
             print(f"已{show_status(show_download_log)}下载日志输出。\n")   
         elif command == "设置选项":
             print(f"{text.TEXT['settings']}\n")
@@ -86,7 +83,9 @@ def execute_command(command: str) -> None:
     elif command == "切换主题":
         ui.set_style() 
     elif command == "关于项目":
-        print(text.TEXT["about"])
+        for ln in text.TEXT["about"].splitlines():
+            print(ln, flush=True)
+            time.sleep(0.03)
     elif command == "退出程序":
         print("程序即将退出")
         time.sleep(0.5)
