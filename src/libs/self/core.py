@@ -1,4 +1,6 @@
 #标准库
+from calendar import c
+from email import message
 import re                           
 import sys
 import time
@@ -16,14 +18,6 @@ def create_jmcli() -> jm.JmcomicClient: # 初始化并构建 JMcomic 客户端
 
 def show_status(arg: bool) -> str: # True -> '开启'
     return "开启" if arg else "关闭" 
-
-def select_command(sections: list[str]) -> str:
-    """
-    MENU_SECTIONS 或 SETTING_SECTIONS（From self.text）
-    """
-    return ui.select(message="请选择操作：",
-                            choices=sections)
-
 
 def jmcomic_download() -> None:
     """
@@ -58,8 +52,11 @@ def jmcomic_download() -> None:
 
 def setting() -> None:
     global show_download_log
+    command = f"{show_status(show_download_log)}下载日志输出" # 默认选项
     while True:
-        command = select_command(text.SETTING_SECTIONS)
+        command = ui.select (message="请选择设置项：",
+                            choices=text.SETTING_SECTIONS,
+                            default= command)
         if command == f"{show_status(show_download_log)}下载日志输出":
             if show_download_log:
                 jm.disable_jm_log()
@@ -96,7 +93,7 @@ def execute_command(command: str) -> None:
 
 def main():
     try:
-        print() # 初始化预留位
+        user_choice = "详细菜单" # 初始化预留位
     except Exception as err:
         print(f"初始化发生异常：{type(err).__name__}:{err}")
         traceback.print_exc()
@@ -105,10 +102,11 @@ def main():
     while True:
         try:
             # 获取用户选择并执行
-            user_choice = select_command(text.MENU_SECTIONS)
+            user_choice = ui.select (message= "请选择操作：",
+                                     choices= text.MENU_SECTIONS,
+                                     default= user_choice)
             execute_command(user_choice)
         except Exception as err:
-            # 全局异常捕获，防止程序崩溃
             print(f"\n程序发生异常：{type(err).__name__}:{err}\n")
             input("回车以查看详细报错...")
             traceback.print_exc()
