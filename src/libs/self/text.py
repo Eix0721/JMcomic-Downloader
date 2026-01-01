@@ -1,4 +1,4 @@
-from libs.self.config import show_download_log
+from libs.self.config import SHOW_JM_LOG
 
 def showing_satus(arg) ->str:
     return "开启" if arg else "关闭"
@@ -36,9 +36,10 @@ TEXT = {
 
     "settings": f"""\n
 {"设置":-^36}
-{showing_satus(not show_download_log)}下载日志输出：开关下载日志输出
+{showing_satus(not SHOW_JM_LOG)}下载日志输出：开关下载日志输出
 测试连接：检测当前IP可访问的Jmcomic域名（测试功能，暂不准确）
-设置选项：显示该设置菜单
+设置菜单：显示该设置菜单
+恢复默认：重置所有设置为默认值
 退出设置：返回主菜单
 **↑/↓ - 选择 | ENTER - 确认
 {"":-^36}\n

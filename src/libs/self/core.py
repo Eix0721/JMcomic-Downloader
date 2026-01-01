@@ -9,7 +9,7 @@ import jmcomic as jm
 import libs.self.config as config   
 from libs.self import ui
 from libs.self import text
-from libs.self.config import show_download_log
+from libs.self.config import SHOW_JM_LOG,edit
 from libs.self.test_domain import test_all_domains
 
 
@@ -23,7 +23,7 @@ def jmcomic_download() -> None:
     """
     包含：输入校验、用户确认、执行下载、异常处理
     """
-    global show_download_log 
+    global SHOW_JM_LOG 
     jm_ids = ui.input_text("请输入要下载的 JMcomic 车号（多个车号用空格分隔）：")
     # 正则校验，仅允许数字和空格
     if not re.fullmatch(r"(\d+\s*)+", jm_ids):
@@ -35,7 +35,7 @@ def jmcomic_download() -> None:
     
     if is_permit:
         # 未开启详细日志，提示等待
-        if not show_download_log:
+        if not SHOW_JM_LOG:
             print("下载任务已开始，请耐心等待...")
 
         start_time = time.time()
@@ -51,26 +51,33 @@ def jmcomic_download() -> None:
 
 
 def setting() -> None:
-    global show_download_log
-    command = f"{show_status(not show_download_log)}下载日志输出" # 默认选项
+    global SHOW_JM_LOG
+    command = f"{show_status(not SHOW_JM_LOG)}下载日志输出" # 默认选项
     while True:
         command = ui.select (message="请选择设置项：",
                             choices=text.SETTING_SECTIONS,
                             default= command)
-        if command == f"{show_status(not show_download_log)}下载日志输出":
-            if show_download_log:
-                jm.disable_jm_log()
-                show_download_log = False
+        if command == f"{show_status(not SHOW_JM_LOG)}下载日志输出":
+            if SHOW_JM_LOG:
+                jm.JmModuleConfig.FLAG_ENABLE_JM_LOG =False
+                SHOW_JM_LOG = edit ('show_download_log',False)
             else:
                 # 如果当前是关闭，则开启
                 jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = True
-                show_download_log = True
-            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = f"{show_status(not show_download_log)}下载日志输出"
-            print(f"已{show_status(show_download_log)}下载日志输出。\n")  
+                SHOW_JM_LOG = edit ("show_download_log",True)
+            # 修改相关选项的状态
+            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = f"{show_status(not SHOW_JM_LOG)}下载日志输出"
+            print(f"已{show_status(SHOW_JM_LOG)}下载日志输出。\n")  
         elif command == "测试连接":
             print("正在测试当前IP可访问的Jmcomic域名，请稍候...")
             test_all_domains()
             print("测试完成。\n") 
+        elif command == "恢复默认":
+            if ui.confirm("此操作将重置所有设置且不可逆，确认恢复默认设置？"):
+                config.init_cfg()
+                print("已恢复默认设置，请重新启动程序以应用更改。\n")
+            else:
+                print("已取消操作。\n")
         elif command == "设置选项":
             print(f"{text.TEXT['settings']}\n")
         elif command == "退出设置":
@@ -100,7 +107,7 @@ def execute_command(command: str) -> None:
 
 def main():
     try:
-        user_choice = "详细菜单" # 初始化预留位
+        choice = "下载漫画" # 初始化预留位
     except Exception as err:
         print(f"初始化发生异常：{type(err).__name__}:{err}")
         traceback.print_exc()
@@ -109,10 +116,10 @@ def main():
     while True:
         try:
             # 获取用户选择并执行
-            user_choice = ui.select (message= "请选择操作：",
+            choice = ui.select (message= "请选择操作：",
                                      choices= text.MENU_SECTIONS,
-                                     default= user_choice)
-            execute_command(user_choice)
+                                     default= choice)
+            execute_command(choice)
         except Exception as err:
             print(f"\n程序发生异常：{type(err).__name__}:{err}\n")
             input("回车以查看详细报错...")

@@ -7,3 +7,4 @@ dist/
 build/
 *.bat
 build_release.py
+src/config.yml
