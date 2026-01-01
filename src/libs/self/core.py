@@ -10,6 +10,7 @@ import libs.self.config as config
 from libs.self import ui
 from libs.self import text
 from libs.self.config import show_download_log
+from libs.self.test_domain import test_all_domains
 
 
 def create_jmcli() -> jm.JmcomicClient: # 初始化并构建 JMcomic 客户端
@@ -65,7 +66,11 @@ def setting() -> None:
                 jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = True
                 show_download_log = True
             text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = f"{show_status(not show_download_log)}下载日志输出"
-            print(f"已{show_status(show_download_log)}下载日志输出。\n")   
+            print(f"已{show_status(show_download_log)}下载日志输出。\n")  
+        elif command == "测试连接":
+            print("正在测试当前IP可访问的Jmcomic域名，请稍候...")
+            test_all_domains()
+            print("测试完成。\n") 
         elif command == "设置选项":
             print(f"{text.TEXT['settings']}\n")
         elif command == "退出设置":
