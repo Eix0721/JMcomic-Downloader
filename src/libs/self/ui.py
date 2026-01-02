@@ -3,7 +3,9 @@ from InquirerPy import inquirer, utils
 import libs.self.text as text
 from libs.self.config import CURRENT_STYLE_NAME,edit
 
-# 当前界面风格，初始化为默认风格
+# 当前界面风格
+if CURRENT_STYLE_NAME not in text.INTERFACE_STYLES:
+    CURRENT_STYLE_NAME = "默认风格"
 current_style = InquirerPy.get_style(text.INTERFACE_STYLES[CURRENT_STYLE_NAME],  # type: ignore no att
                                      style_override=True)
 
