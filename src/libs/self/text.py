@@ -16,6 +16,7 @@ LINK = {
     "jm": "https://github.com/hect0x7/JMComic-Crawler-Python",  # JMcomic
     "yaml": "https://github.com/yaml/pyyaml",                   # pyYAML
     "InquirerPy": "https://github.com/kazhala/InquirerPy",      # InquirerPy
+    "SimpSave": "https://github.com/Water-Run/SimpSave",        # SimpSave
     "pj": "https://github.com/Eix0721/JMcomic-Downloader"       # 项目地址
 }
 
@@ -54,9 +55,9 @@ TEXT = {
 **JMComic Crawler Python
 描述：提供漫画下载核心功能
 地址：{LINK['jm']}
-**pyYAML
-描述：未来用于配置文件支持
-地址：{LINK['yaml']}
+**SimpSave
+描述：配置文件读写工具
+地址：{LINK['SimpSave']}
 **InquirerPy
 描述：构建交互式命令行界面
 地址：{LINK['InquirerPy']}

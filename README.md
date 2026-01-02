@@ -91,17 +91,27 @@
 ## 📂 文件结构
 
 ```
-JMComic-Downloader/
-├── jmcomic_downloader.py    # 程序入口
-├── libs/
-│   ├── self/
-│   │   ├── core.py          # 核心逻辑
-│   │   ├── ui.py            # 界面交互
-│   │   ├── text.py          # 文本内容
-│   │   └── confit_manager.py # 配置管理
-│   └── ...
-├── README.md                # 项目说明
-└── ...
+Jmcomic-Downloader\
+│  README.md          # 项目说明
+│  CHANGELOG          # 更新日志
+│  LICENSE            # 开源协议
+│  .gitignore
+├─assets
+│   └─ icon.ico       # 程序图标
+└─src
+    │  jmcomic_downloader.py  # 程序入口
+    │  requirements.txt       # 依赖列表
+    ├─libs
+    │   │  __init__.py
+    │   ├─self                # 项目核心模块
+    │   │   │  core.py        # 主流程
+    │   │   │  ui.py          # 控制台 UI
+    │   │   │  text.py        # 文本常量 / 菜单文案
+    │   │   │  config.py      # 配置处理
+    │   │   │  test_domain.py # 域名测试
+    │   │   │  __init__.py
+    └─...
+
 ```
 
 
@@ -115,8 +125,7 @@ JMComic-Downloader/
 | **[Python](https://www.python.org)** | 开发语言 | 3.9+ |
 | **[JMComic Crawlern](https://github.com/hect0x7/JMComic-Crawler-Python)** | 漫画下载核心 | latest |
 | **[InquirerPy](https://github.com/kazhala/InquirerPy)** | 交互式命令行 | latest |
-| **[pyYAML](https://github.com/yaml/pyyaml)** | 配置文件支持 | latest |
-
+| **[SimpSave](https://github.com/Water-Run/SimpSave)** | 配置文件读写 | latest |
 </div>
 
 - **关爱禁漫娘，请不要一次性下载过多本子!**
