@@ -1,12 +1,13 @@
 import InquirerPy
 from InquirerPy import inquirer, utils
 import libs.self.text as text
-from libs.self.config import CURRENT_STYLE_NAME,edit
+from libs.self.config import cfgs
 
-# 当前界面风格
-if CURRENT_STYLE_NAME not in text.INTERFACE_STYLES:
-    CURRENT_STYLE_NAME = "默认风格"
-current_style = InquirerPy.get_style(text.INTERFACE_STYLES[CURRENT_STYLE_NAME],  # type: ignore no att
+# 
+if cfgs.CURRENT_STYLE_NAME not in text.INTERFACE_STYLES:
+    print ("所选主题不存在，已修改为默认风格。")
+    cfgs.CURRENT_STYLE_NAME = "默认风格"
+current_style = InquirerPy.get_style(text.INTERFACE_STYLES[cfgs.CURRENT_STYLE_NAME],  # type: ignore no att
                                      style_override=True)
 
 
@@ -75,7 +76,7 @@ def set_style() -> None:
     允许用户从预定义的风格列表中选择界面主题，
     支持循环选择直到用户取消或发生错误
     """
-    global current_style,CURRENT_STYLE_NAME
+    global current_style
     is_keep_going = True
     style_choice = "默认风格"  # 默认选中的风格
     
@@ -94,7 +95,7 @@ def set_style() -> None:
                 return
 
             # 获取并存储选中的风格配置
-            CURRENT_STYLE_NAME = edit("current_style_name",style_choice)
+            cfgs.CURRENT_STYLE_NAME = cfgs.edit("current_style_name",style_choice)
             style_args = text.INTERFACE_STYLES[style_choice]
 
             # 应用新风格

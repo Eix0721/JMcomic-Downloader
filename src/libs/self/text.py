@@ -1,4 +1,4 @@
-from libs.self.config import SHOW_JM_LOG
+from libs.self.config import cfgs
 
 def showing_satus(arg) ->str:
     return "开启" if arg else "关闭"
@@ -24,8 +24,8 @@ LINK = {
 TEXT = {
     "menu": f"""
 \n\n
-{"菜单":-^36}
-详细菜单：显示此菜单页面
+{"功能":-^36}
+功能说明：显示此功能说明页面
 下载漫画：下载JMcomic漫画
 设置选项：设置文件路径等（开发中）
 切换主题：更改界面主题风格
@@ -37,9 +37,9 @@ TEXT = {
 
     "settings": f"""\n
 {"设置":-^36}
-{showing_satus(not SHOW_JM_LOG)}下载日志输出：开关下载日志输出
+设置说明：显示该设置说明页
+{showing_satus(not cfgs.SHOW_JM_LOG)}下载日志输出：开关下载日志输出
 测试连接：检测当前IP可访问的Jmcomic域名（测试功能，暂不准确）
-设置菜单：显示该设置菜单
 恢复默认：重置所有设置为默认值
 退出设置：返回主菜单
 **↑/↓ - 选择 | ENTER - 确认

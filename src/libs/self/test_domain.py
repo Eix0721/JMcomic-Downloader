@@ -1,6 +1,6 @@
 """ 
-该脚本的作用：测试当前ip可以访问哪些禁漫域名 
-代码取自JMcomic Crawler Python文档
+测试当前ip可以访问哪些禁漫域名 
+修改取自JMcomic Crawler Python文档
 https://jmcomic.readthedocs.io/zh-cn/latest/tutorial/8_pick_domain/ 
 **含有部分AI生成的代码
 """
@@ -8,10 +8,10 @@ https://jmcomic.readthedocs.io/zh-cn/latest/tutorial/8_pick_domain/
 import traceback
 import sys
 import os
-
+from libs.self.config import cfgs
 from jmcomic import JmOption, JmcomicText, JmModuleConfig, disable_jm_log, multi_thread_launcher, Set
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-import libs.self.core as core
+
 
 
 option = JmOption.default()
@@ -54,7 +54,7 @@ def test_domain(domain: str):
         status = str(e.args)
 
     domain_status_dict[domain] = status
-    input ("回车以测试下一个域名...")
+
 
 def test_all_domains():
     try:
@@ -77,5 +77,5 @@ def test_all_domains():
         traceback.print_exc()
     finally:
         # ✔ 恢复日志开关
-        JmModuleConfig.FLAG_ENABLE_JM_LOG = core.SHOW_JM_LOG
+        JmModuleConfig.FLAG_ENABLE_JM_LOG = cfgs.SHOW_JM_LOG
 

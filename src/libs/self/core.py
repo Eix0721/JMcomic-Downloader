@@ -1,15 +1,14 @@
-#标准库
+# 标准库
 import re                           
 import sys
 import time
 import traceback
-#第三方库
+# 第三方库
 import jmcomic as jm         
-#本地库       
-import libs.self.config as config   
+# 本地库
 from libs.self import ui
 from libs.self import text
-from libs.self.config import SHOW_JM_LOG,edit
+from libs.self.config import cfgs
 from libs.self.test_domain import test_all_domains
 
 
@@ -35,7 +34,7 @@ def jmcomic_download() -> None:
     
     if is_permit:
         # 未开启详细日志，提示等待
-        if not SHOW_JM_LOG:
+        if not cfgs.SHOW_JM_LOG:
             print("下载任务已开始，请耐心等待...")
 
         start_time = time.time()
@@ -51,20 +50,19 @@ def jmcomic_download() -> None:
 
 
 def setting() -> None:
-    global SHOW_JM_LOG
-    command = f"{show_status(not SHOW_JM_LOG)}下载日志输出" # 默认选项
+    command = f"{show_status(not cfgs.SHOW_JM_LOG)}下载日志输出" # 默认选项
     while True:
         command = ui.select (message="请选择设置项：",
                             choices=text.SETTING_SECTIONS,
                             default= command)
-        if command == f"{show_status(not SHOW_JM_LOG)}下载日志输出":
-            if SHOW_JM_LOG:
+        if command == f"{show_status(not cfgs.SHOW_JM_LOG)}下载日志输出":
+            if cfgs.SHOW_JM_LOG:
                 jm.JmModuleConfig.FLAG_ENABLE_JM_LOG =False
-                SHOW_JM_LOG = edit ('show_download_log',False)
+                SHOW_JM_LOG = cfgs.edit ('show_download_log',False)
             else:
                 # 如果当前是关闭，则开启
                 jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = True
-                SHOW_JM_LOG = edit ("show_download_log",True)
+                SHOW_JM_LOG = cfgs.edit ("show_download_log",True)
             # 修改相关选项的状态
             text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = f"{show_status(not SHOW_JM_LOG)}下载日志输出"
             print(f"已{show_status(SHOW_JM_LOG)}下载日志输出。\n")  
@@ -74,11 +72,11 @@ def setting() -> None:
             print("测试完成。\n") 
         elif command == "恢复默认":
             if ui.confirm("此操作将重置所有设置且不可逆，确认恢复默认设置？"):
-                config.init_cfg()
+                cfgs.reset_cfg()
                 print("已恢复默认设置，请重新启动程序以应用更改。\n")
             else:
                 print("已取消操作。\n")
-        elif command == "设置选项":
+        elif command == "设置说明":
             print(f"{text.TEXT['settings']}\n")
         elif command == "退出设置":
             break
@@ -86,7 +84,7 @@ def setting() -> None:
             print(f"指令 \"{command}\" 不存在或不可用。")
 
 def execute_command(command: str) -> None:
-    if command == "详细菜单":
+    if command == "功能说明":
         print(text.TEXT["menu"])
     elif command == "下载漫画":
         jmcomic_download()
@@ -116,9 +114,9 @@ def main():
     while True:
         try:
             # 获取用户选择并执行
-            choice = ui.select (message= "请选择操作：",
-                                     choices= text.MENU_SECTIONS,
-                                     default= choice)
+            choice = ui.select (message = "请选择操作：",
+                                choices= text.MENU_SECTIONS,
+                                default= choice)
             execute_command(choice)
         except Exception as err:
             print(f"\n程序发生异常：{type(err).__name__}:{err}\n")
