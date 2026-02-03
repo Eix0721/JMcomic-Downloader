@@ -3,7 +3,7 @@ from InquirerPy import inquirer, utils
 import libs.self.text as text
 from libs.self.config import cfgs
 
-# 
+
 if cfgs.CURRENT_STYLE_NAME not in text.INTERFACE_STYLES:
     print ("所选主题不存在，已修改为默认风格。")
     cfgs.CURRENT_STYLE_NAME = "默认风格"
