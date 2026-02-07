@@ -36,7 +36,7 @@ def confirm(message) -> bool:
         message: 确认提示信息
 
     Returns:
-        bool: True表示用户选择"确认"，False表示选择"取消"
+        bool: True-"确认"，False-"取消"
     """
     choice = InquirerPy.inquirer.select(   # type: ignore
         message=message,

@@ -6,9 +6,10 @@ import traceback
 # 第三方库
 import jmcomic as jm         
 # 本地库
-from libs.self import ui
+import libs.self.ui as ui
 from libs.self import text
 from libs.self.config import cfgs
+from libs.self.history import history
 from libs.self.test_domain import test_all_domains
 
 
@@ -17,6 +18,14 @@ def create_jmcli() -> jm.JmcomicClient: # 初始化并构建 JMcomic 客户端
 
 def show_status(arg: bool) -> str: # True -> '开启'
     return "开启" if arg else "关闭" 
+
+def excute_detail (arg) ->dict:
+    return {"title": arg.name,
+            "id":    arg.id,
+            "author":arg.author,
+            "tags":  arg.tags,
+            "pages": arg.page_count,
+            "chapters": len(arg)}
 
 def jmcomic_download() -> None:
     """
@@ -28,23 +37,23 @@ def jmcomic_download() -> None:
     if not re.fullmatch(r"(\d+\s*)+", jm_ids):
         print("输入的格式有误，请输入仅包含数字的车号，多个车号用空格分隔！")
         return
-    # 去头尾空格，并分割为list
-    jm_ids = jm_ids.strip().split()
-    is_permit = ui.confirm (f"即将下载：{jm_ids}，是否继续？")
-    
-    if is_permit:
+
+    if ui.confirm (f"即将下载：{jm_ids}，是否继续？"):
         # 未开启详细日志，提示等待
         if not cfgs.SHOW_JM_LOG:
             print("下载任务已开始，请耐心等待...")
 
         start_time = time.time()
-        try:
-            jm.download_album(jm_ids)
-        except Exception as err:
-            print("\n**本子不存在或请求时发生错误:")
-            print(f"{type(err).__name__}:{err}\n")
-        else:
-            print(f"\n下载结束！\n用时:{time.time() - start_time:.3f}秒\n")  
+        for jm_id in jm_ids.strip().split():
+            try:
+                album_detail = excute_detail(jm.download_album(jm_id)[0]) # type: ignore 
+            except Exception as err:
+                print("\n**本子不存在或请求时发生错误:")
+                print(f"{type(err).__name__}:{err}\n")
+            else:
+                latest = history.add(album_detail)
+                print(f"[{latest.get('download_time')}] <{latest.get('jm_id')}> {latest.get('title')} 下载完成！")  
+        print (f"所有下载任务已完成，耗时 {time.time() - start_time:.2f} 秒。\n")
     else:
         print("已取消下载任务。")
 
@@ -56,16 +65,15 @@ def setting() -> None:
                             choices=text.SETTING_SECTIONS,
                             default= command)
         if command == f"{show_status(not cfgs.SHOW_JM_LOG)}下载日志输出":
-            if cfgs.SHOW_JM_LOG:
-                jm.JmModuleConfig.FLAG_ENABLE_JM_LOG =False
-                SHOW_JM_LOG = cfgs.edit ('show_download_log',False)
-            else:
-                # 如果当前是关闭，则开启
-                jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = True
-                SHOW_JM_LOG = cfgs.edit ("show_download_log",True)
+            # ONLY DEBUG ↓↓↓
+            # print(f"TEXT:{text.SETTING_SECTIONS}\nFLAG:{jm.JmModuleConfig.FLAG_ENABLE_JM_LOG}\ncfgs:{cfgs.SHOW_JM_LOG}")
+            jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = not jm.JmModuleConfig.FLAG_ENABLE_JM_LOG
+            cfgs.SHOW_JM_LOG = cfgs.edit("show_download_log",jm.JmModuleConfig.FLAG_ENABLE_JM_LOG)
             # 修改相关选项的状态
-            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = f"{show_status(not SHOW_JM_LOG)}下载日志输出"
-            print(f"已{show_status(SHOW_JM_LOG)}下载日志输出。\n")  
+            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = f"{show_status(not cfgs.SHOW_JM_LOG)}下载日志输出"
+            print(f"已{show_status(cfgs.SHOW_JM_LOG)}下载日志输出。\n")  
+            # ONLY DEBUG ↓↓↓
+            # print(f"TEXT:{text.SETTING_SECTIONS}\nFLAG:{jm.JmModuleConfig.FLAG_ENABLE_JM_LOG}\ncfgs:{cfgs.SHOW_JM_LOG}")
         elif command == "测试连接":
             print("正在测试当前IP可访问的Jmcomic域名，请稍候...")
             test_all_domains()
@@ -76,6 +84,8 @@ def setting() -> None:
                 print("已恢复默认设置，请重新启动程序以应用更改。\n")
             else:
                 print("已取消操作。\n")
+        elif command == "切换主题":
+            ui.set_style() 
         elif command == "设置说明":
             print(f"{text.TEXT['settings']}\n")
         elif command == "退出设置":
@@ -90,8 +100,8 @@ def execute_command(command: str) -> None:
         jmcomic_download()
     elif command == "设置选项":
         setting()
-    elif command == "切换主题":
-        ui.set_style() 
+    elif command == "历史记录":
+        history.print_history()
     elif command == "关于项目":
         for ln in text.TEXT["about"].splitlines():
             print(ln, flush=True)

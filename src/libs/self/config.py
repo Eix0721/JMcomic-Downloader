@@ -1,11 +1,9 @@
 import simpsave as ss
 
 
-
 default_cfgs = {"config_exsist":True,
                 "show_download_log":True,
-                "current_style_name":"默认风格",
-                "download_history":{}}
+                "current_style_name":"默认风格",}
 
 
 class Configs:
@@ -18,9 +16,9 @@ class Configs:
         except Exception as err:
             print(f"读取配置文件时发生未知异常：{type(err).__name__}:{err}")
         try:
+            print("正在读取配置文件...")
             self.SHOW_JM_LOG = ss.read("show_download_log", file="config.yml")
             self.CURRENT_STYLE_NAME = ss.read("current_style_name", file="config.yml")
-            self.DOWNLOAD_HISTORY = ss.read("download_history", file="config.yml")
         except Exception as err:
             print(f"读取配置项时发生错误：{type(err).__name__}:{err}\n将使用默认配置，本次运行修改的设置可能不生效！")
             Configs.reset_cfg(self)
@@ -31,7 +29,8 @@ class Configs:
             ss.delete(file = "config.yml") # 删除原有配置文件，write时会自动创建配置文件
             for key, val in default_cfgs.items():
                 ss.write (key, val, file = "config.yml")
-            Configs.save_all(self)
+            self.SHOW_JM_LOG = default_cfgs["show_download_log"]
+            self.CURRENT_STYLE_NAME = default_cfgs["current_style_name"]
         except Exception as err:
             print(f"初始化配置文件时发生错误：{type(err).__name__}:{err}")
 
@@ -45,7 +44,6 @@ class Configs:
         try:
             Configs.edit(self, "show_download_log", self.SHOW_JM_LOG)
             Configs.edit(self, "current_style_name", self.CURRENT_STYLE_NAME)
-            Configs.edit(self, "download_history", self.DOWNLOAD_HISTORY)
         except Exception as err:
             print(f"保存配置时发生错误：{type(err).__name__}:{err}")
 
