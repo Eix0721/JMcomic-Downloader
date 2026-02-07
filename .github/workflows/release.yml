@@ -59,8 +59,9 @@ jobs:
         echo "Testing executable..."
         # 测试可执行文件是否能运行（不实际下载）
         .\"JMcomic Downloader.exe" --help 2>&1 || echo "Executable test completed"
-        echo "Executable size: $(ls -la 'JMcomic Downloader.exe' | awk '{print $5}')"
-    
+        # 获取文件大小（Windows PowerShell 方式）
+        $fileSize = (Get-Item "JMcomic Downloader.exe").Length
+        echo "Executable size: $fileSize bytes"
     - name: Prepare release assets
       run: |
         # 创建版本说明文件
@@ -98,3 +99,4 @@ jobs:
         draft: false
         prerelease: false
         make_latest: true
+
