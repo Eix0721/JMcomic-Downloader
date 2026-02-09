@@ -84,12 +84,12 @@ jobs:
             exit 1
         }
 
-    - name: Create Release
+    - name: Create GitHub Release
       id: create_release
-      uses: softprops/action-gh-release@v1
+      uses: ncipollo/release-action@v1
       with:
+        tag: ${{ github.ref_name }}
         name: Release ${{ github.ref_name }}
-        tag_name: ${{ github.ref_name }}
         body: |
           Automated build for ${{ github.ref_name }}
 
@@ -98,17 +98,20 @@ jobs:
           - Built on ${{ github.event.head_commit.timestamp }}
         draft: false
         prerelease: true
-        generate_release_notes: true
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        generateReleaseNotes: true
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Executable to Release
+      uses: actions/upload-artifact@v4
+      with:
+        name: JMcomic-Downloader-${{ github.ref_name }}
+        path: src/dist/JMcomic Downloader.exe
 
     - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: ncipollo/release-action@v1
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./src/dist/JMcomic Downloader.exe
-        asset_name: JMcomic-Downloader-${{ github.ref_name }}-windows-amd64.exe
-        asset_content_type: application/octet-stream
+        tag: ${{ github.ref_name }}
+        artifacts: src/dist/JMcomic Downloader.exe
+        artifactContentType: application/octet-stream
+        token: ${{ secrets.GITHUB_TOKEN }}
 
