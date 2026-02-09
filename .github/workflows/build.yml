@@ -1,0 +1,59 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r src/requirements.txt
+        pip install pyinstaller
+    
+    - name: Prepare build environment
+      run: |
+        cd src
+        if exist "build" rmdir /s /q build
+        if exist "dist" rmdir /s /q dist
+        if exist "JMcomic Downloader.spec" del "JMcomic Downloader.spec"
+    
+    - name: Build with PyInstaller
+      run: |
+        cd src
+        pyinstaller ^
+          --onefile ^
+          --console ^
+          --name "JMcomic Downloader" ^
+          --icon="../assets/icon.ico" ^
+          --hidden-import "jmcomic" ^
+          --hidden-import "InquirerPy" ^
+          --hidden-import "simpsave" ^
+          --hidden-import "yaml" ^
+          jmcomic_downloader.py
+        
+        echo "Build completed!"
+        dir dist
+    
+    - name: Test the executable
+      run: |
+        cd src/dist
+        echo "Testing executable..."
+        .\"JMcomic Downloader.exe" --help 2>&1 || echo "Executable test completed"
+        $fileSize = (Get-Item "JMcomic Downloader.exe").Length
+        echo "Executable size: $fileSize bytes"
