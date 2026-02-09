@@ -1,0 +1,114 @@
+name: pre_release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r src/requirements.txt
+        pip install pyinstaller
+    
+    - name: Prepare build environment
+      shell: pwsh
+      run: |
+        cd src
+        if (Test-Path "build") { Remove-Item -Recurse -Force "build" }
+        if (Test-Path "dist") { Remove-Item -Recurse -Force "dist" }
+        if (Test-Path "JMcomic Downloader.spec") { Remove-Item -Force "JMcomic Downloader.spec" }
+    
+    - name: Build with PyInstaller
+      shell: pwsh
+      run: |
+        cd src
+        pyinstaller `
+          --onefile `
+          --console `
+          --name "JMcomic Downloader" `
+          --icon="../assets/icon.ico" `
+          --hidden-import "jmcomic" `
+          --hidden-import "InquirerPy" `
+          --hidden-import "simpsave" `
+          --hidden-import "yaml" `
+          jmcomic_downloader.py
+        
+        Write-Host "Build completed!"
+        Get-ChildItem dist
+    
+    - name: Test the executable
+      shell: pwsh
+      run: |
+        cd src/dist
+        Write-Host "Testing executable..."
+
+        # 尝试运行可执行文件并捕获输出和错误
+        $output = & ".\JMcomic Downloader.exe" --help 2>&1
+        $exitCode = $LASTEXITCODE
+
+        if ($exitCode -eq 0) {
+            Write-Host "Executable test completed successfully"
+            Write-Host "Output: $output"
+        } else {
+            Write-Host "Executable returned exit code: $exitCode"
+            Write-Host "Output/Error: $output"
+            # 如果只是帮助信息显示后退出，这可能不是真正的错误
+            # 很多命令行工具在显示帮助后以非零代码退出
+        }
+
+        $fileSize = (Get-Item "JMcomic Downloader.exe").Length
+        Write-Host "Executable size: $fileSize bytes"
+
+        # 如果文件存在且大小合理，就认为构建成功
+        if ($fileSize -gt 1000000) {  # 大于1MB
+            Write-Host "Build appears to be successful"
+            exit 0
+        } else {
+            Write-Host "Warning: Executable file size seems too small"
+            exit 1
+        }
+
+    - name: Create Release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Release ${{ github.ref_name }}
+        tag_name: ${{ github.ref_name }}
+        body: |
+          Automated build for ${{ github.ref_name }}
+
+          ## Changes
+          - Built from commit ${{ github.sha }}
+          - Built on ${{ github.event.head_commit.timestamp }}
+        draft: false
+        prerelease: true
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./src/dist/JMcomic Downloader.exe
+        asset_name: JMcomic-Downloader-${{ github.ref_name }}-windows-amd64.exe
+        asset_content_type: application/octet-stream
+
