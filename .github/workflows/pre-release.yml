@@ -84,34 +84,26 @@ jobs:
             exit 1
         }
 
-    - name: Create GitHub Release
-      id: create_release
-      uses: ncipollo/release-action@v1
-      with:
-        tag: ${{ github.ref_name }}
-        name: Release ${{ github.ref_name }}
-        body: |
-          Automated build for ${{ github.ref_name }}
-
-          ## Changes
-          - Built from commit ${{ github.sha }}
-          - Built on ${{ github.event.head_commit.timestamp }}
-        draft: false
-        prerelease: true
-        generateReleaseNotes: true
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Upload Executable to Release
+    - name: Upload Build Artifact
       uses: actions/upload-artifact@v4
       with:
         name: JMcomic-Downloader-${{ github.ref_name }}
         path: src/dist/JMcomic Downloader.exe
+        retention-days: 7
 
-    - name: Upload Release Asset
-      uses: ncipollo/release-action@v1
-      with:
-        tag: ${{ github.ref_name }}
-        artifacts: src/dist/JMcomic Downloader.exe
-        artifactContentType: application/octet-stream
-        token: ${{ secrets.GITHUB_TOKEN }}
+    # 可选：使用 GitHub CLI 创建 release（需要 PAT 权限）
+    - name: Create Release with GitHub CLI
+      if: false  # 默认禁用，需要手动启用并配置 PAT
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # 安装 GitHub CLI（如果未安装）
+        winget install --id GitHub.cli --source winget
+
+        # 创建 release
+        gh release create ${{ github.ref_name }} \
+          --title "Release ${{ github.ref_name }}" \
+          --notes "Automated build for ${{ github.ref_name }}" \
+          --prerelease \
+          src/dist/JMcomic\ Downloader.exe
 
