@@ -1,5 +1,5 @@
 <div align="center">
-   <img width="256" height="256" src="assets/iconv2_256x256.jpg">
+   <img width="256" height="256" src="assets/iconv2_512x512.jpg">
    <h1>JMComic Downloader</h1>
    <p>基于 Python 开发的命令行漫画下载工具，提供简洁易用的交互式界面，支持批量下载、历史记录管理及多主题切换。</p><br>
 
@@ -58,7 +58,7 @@
 ## 🎮 使用指南
 
 - #### 主菜单
-   - <img src="assets/func_demo_1_20260219.png" alt="主菜单" style="zoom:70%;"><br>
+   - <img src="assets/func_demo_1_20260219.png" alt="主菜单" style="zoom:50%;"><br>
    - 启动程序后，通过 **`↑/↓`** 选择功能，按 **`ENTER`** 键确认：
 
 - #### 下载漫画
