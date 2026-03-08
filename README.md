@@ -1,5 +1,5 @@
 <div align="center">
-   <img width="256" height="256" src="assets/icon.ico">
+   <img width="256" height="256" src="assets/iconv2_256x256.jpg">
    <h1>JMComic Downloader</h1>
    <p>基于 Python 开发的命令行漫画下载工具，提供简洁易用的交互式界面，支持批量下载、历史记录管理及多主题切换。</p><br>
 
