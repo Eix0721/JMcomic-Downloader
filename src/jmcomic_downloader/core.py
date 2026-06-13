@@ -1,4 +1,5 @@
 import re
+import threading
 import time
 import traceback
 from typing import Any
@@ -13,6 +14,57 @@ from .test_domain import test_all_domains
 
 def show_status(arg: bool) -> str:
     return "开启" if arg else "关闭"
+
+
+class ProgressDownloader(jm.JmDownloader):  # type: ignore[misc]
+    """JmDownloader 子类，在日志关闭时显示实时下载进度。"""
+
+    def __init__(self, option: Any) -> None:
+        super().__init__(option)
+        self._album_title = ""
+        self._total_pages = 0
+        self._completed_pages = 0
+        self._total_photos = 0
+        self._lock = threading.Lock()
+
+    def before_album(self, album: jm.JmAlbumDetail) -> None:
+        super().before_album(album)
+        self._album_title = album.name
+        self._total_pages = album.page_count
+        self._completed_pages = 0
+        self._total_photos = len(album)
+        print(f"正在下载: 《{album.name}》")
+        self._render()
+
+    def before_photo(self, photo: jm.JmPhotoDetail) -> None:
+        super().before_photo(photo)
+
+    def after_image(self, image: jm.JmImageDetail, img_save_path: str) -> None:
+        super().after_image(image, img_save_path)
+        with self._lock:
+            self._completed_pages += 1
+            self._render()
+
+    def _render(self) -> None:
+        pct = self._completed_pages * 100 // max(1, self._total_pages)
+        bar_len = 16
+        filled = pct * bar_len // 100
+        bar = "█" * filled + "░" * (bar_len - filled)
+        line = (
+            f"  [{bar}] "
+            f"{self._completed_pages}/{self._total_pages}页 "
+            f"({pct}%)"
+        )
+        print("\r" + line, end="", flush=True)
+
+    def after_album(self, album: jm.JmAlbumDetail) -> None:
+        super().after_album(album)
+        # 确保进度条显示 100%
+        with self._lock:
+            self._completed_pages = self._total_pages
+            self._render()
+        print()
+        print(f"  ✓ 下载完成 ({self._total_pages}页)")
 
 
 def execute_detail(arg: Any) -> dict[str, Any]:
@@ -33,13 +85,18 @@ def jmcomic_download() -> None:
         return
 
     if ui.confirm(f"即将下载：{jm_ids}，是否继续？"):
-        if not cfgs.show_jm_log:
-            print("下载任务已开始，请耐心等待...")
+        downloader_kwargs: dict[str, Any] = (
+            {"downloader": ProgressDownloader}
+            if not cfgs.show_jm_log
+            else {}
+        )
 
         start_time = time.time()
         for jm_id in jm_ids.split():
             try:
-                album_detail = execute_detail(jm.download_album(jm_id)[0])
+                album_detail = execute_detail(
+                    jm.download_album(jm_id, **downloader_kwargs)[0]
+                )
             except Exception as err:
                 print("\n**本子不存在或请求时发生错误:")
                 print(f"{type(err).__name__}:{err}\n")
