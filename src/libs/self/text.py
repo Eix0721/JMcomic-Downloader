@@ -1,6 +1,6 @@
 from libs.self.config import cfgs
 
-def showing_satus(arg) ->str:
+def show_status(arg) -> str:
     return "开启" if arg else "关闭"
 
 def get_sections (orig_text) ->list[str]:
@@ -13,11 +13,11 @@ def get_sections (orig_text) ->list[str]:
     return sections
 
 LINK = {
-    "jm": "https://github.com/hect0x7/JMComic-Crawler-Python",  # JMcomic
-    "yaml": "https://github.com/yaml/pyyaml",                   # pyYAML
-    "InquirerPy": "https://github.com/kazhala/InquirerPy",      # InquirerPy
-    "SimpSave": "https://github.com/Water-Run/SimpSave",        # SimpSave
-    "pj": "https://github.com/Eix0721/JMcomic-Downloader"       # 项目地址
+    "jm": "https://github.com/hect0x7/JMComic-Crawler-Python",
+    "yaml": "https://github.com/yaml/pyyaml",
+    "InquirerPy": "https://github.com/kazhala/InquirerPy",
+    "SimpSave": "https://github.com/Water-Run/SimpSave",
+    "pj": "https://github.com/Eix0721/JMcomic-Downloader",
 }
 
 
@@ -38,7 +38,7 @@ TEXT = {
     "settings": f"""\n
 {"设置":-^36}
 设置说明：显示该设置说明页
-{showing_satus(not cfgs.SHOW_JM_LOG)}下载日志输出：开关下载日志输出
+{show_status(not cfgs.SHOW_JM_LOG)}下载日志输出：开关下载日志输出
 切换主题：更改界面主题风格
 测试连接：检测当前IP可访问的Jmcomic域名（测试功能，暂不准确）
 恢复默认：重置所有设置为默认值

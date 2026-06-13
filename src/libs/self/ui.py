@@ -1,5 +1,5 @@
 import InquirerPy
-from InquirerPy import inquirer, utils
+from InquirerPy import inquirer
 import libs.self.text as text
 from libs.self.config import cfgs
 
@@ -11,21 +11,8 @@ current_style = InquirerPy.get_style(text.INTERFACE_STYLES[cfgs.CURRENT_STYLE_NA
                                      style_override=True)
 
 
-def input_text(mesage) -> str:
-    """
-    显示文本输入提示框
-
-    Args:
-        mesage: 提示信息文本
-
-    Returns:
-        str: 用户输入的文本内容
-    """
-    output_str = InquirerPy.inquirer.text(  # type: ignore
-        message=mesage,
-        style=current_style,
-    ).execute()
-    return output_str
+def input_text(message) -> str:
+    return inquirer.text(message=message, style=current_style).execute()
 
 
 def confirm(message) -> bool:
@@ -38,12 +25,12 @@ def confirm(message) -> bool:
     Returns:
         bool: True-"确认"，False-"取消"
     """
-    choice = InquirerPy.inquirer.select(   # type: ignore
+    choice = inquirer.select(
         message=message,
         choices=["确认", "取消"],
         style=current_style,
         pointer=">"
-            ).execute()
+    ).execute()
     return choice == "确认"
 
 
@@ -59,7 +46,7 @@ def select(message, choices, default=None) -> str:
     Returns:
         str: 用户选择的选项文本
     """
-    choice = InquirerPy.inquirer.select(  # type: ignore
+    choice = inquirer.select(
         message=message,
         choices=choices,
         default=default,
