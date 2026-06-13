@@ -115,7 +115,7 @@ def jmcomic_download() -> None:
 def setting() -> None:
     while True:
         toggle_label = f"{show_status(not cfgs.show_jm_log)}下载日志输出"
-        choices = [toggle_label] + text.SETTING_SECTIONS[1:]
+        choices = [text.SETTING_SECTIONS[0], toggle_label] + text.SETTING_SECTIONS[2:]
         command = ui.select(
             message="请选择设置项：",
             choices=choices,
