@@ -14,9 +14,31 @@ dependencies = [
     "PyYAML",
     "simpsave",
 ]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Multimedia :: Graphics",
+]
+
+[project.urls]
+Homepage = "https://github.com/Eix0721/JMcomic-Downloader"
+Repository = "https://github.com/Eix0721/JMcomic-Downloader"
+Issues = "https://github.com/Eix0721/JMcomic-Downloader/issues"
 
 [project.scripts]
 jmcomic-downloader = "jmcomic_downloader:main"
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.11",
+    "mypy>=1.15",
+    "pytest>=8.0",
+    "pytest-env>=1.0",
+]
 
 [build-system]
 requires = ["setuptools"]
@@ -28,3 +50,41 @@ include = ["jmcomic_downloader*"]
 
 [tool.uv]
 package = true
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+exclude = [
+    "src/jmcomic_downloader/test_domain.py",
+    "src/jmcomic_downloader/ui.py",
+]
+
+[[tool.mypy.overrides]]
+module = "jmcomic.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "InquirerPy.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "simpsave"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "curl_cffi.*"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
