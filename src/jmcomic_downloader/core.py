@@ -1,10 +1,17 @@
 import re
-import threading
 import time
 import traceback
+from types import TracebackType
 from typing import Any
 
 import jmcomic as jm
+from rich.progress import (
+    BarColumn,
+    Progress,
+    TaskID,
+    TextColumn,
+    TimeElapsedColumn,
+)
 
 from . import text, ui
 from .config import cfgs
@@ -17,54 +24,51 @@ def show_status(arg: bool) -> str:
 
 
 class ProgressDownloader(jm.JmDownloader):  # type: ignore[misc]
-    """JmDownloader 子类，在日志关闭时显示实时下载进度。"""
+    """JmDownloader 子类，在日志关闭时用 rich 显示实时下载进度。"""
 
     def __init__(self, option: Any) -> None:
         super().__init__(option)
-        self._album_title = ""
-        self._total_pages = 0
-        self._completed_pages = 0
-        self._total_photos = 0
-        self._lock = threading.Lock()
+        self._progress = Progress(
+            TextColumn("{task.description}"),
+            BarColumn(),
+            TextColumn("{task.completed:.0f}/{task.total:.0f}页"),
+            TimeElapsedColumn(),
+            transient=True,
+        )
+        self._task_id: TaskID | None = None
 
     def before_album(self, album: jm.JmAlbumDetail) -> None:
         super().before_album(album)
-        self._album_title = album.name
-        self._total_pages = album.page_count
-        self._completed_pages = 0
-        self._total_photos = len(album)
-        print(f"正在下载: 《{album.name}》")
-        self._render()
+        self._progress.start()
+        self._task_id = self._progress.add_task(
+            f"正在下载: 《{album.name}》",
+            total=album.page_count,
+        )
 
     def before_photo(self, photo: jm.JmPhotoDetail) -> None:
         super().before_photo(photo)
 
     def after_image(self, image: jm.JmImageDetail, img_save_path: str) -> None:
         super().after_image(image, img_save_path)
-        with self._lock:
-            self._completed_pages += 1
-            self._render()
-
-    def _render(self) -> None:
-        pct = self._completed_pages * 100 // max(1, self._total_pages)
-        bar_len = 16
-        filled = pct * bar_len // 100
-        bar = "█" * filled + "░" * (bar_len - filled)
-        line = (
-            f"  [{bar}] "
-            f"{self._completed_pages}/{self._total_pages}页 "
-            f"({pct}%)"
-        )
-        print("\r" + line, end="", flush=True)
+        if self._task_id is not None:
+            self._progress.advance(self._task_id)
 
     def after_album(self, album: jm.JmAlbumDetail) -> None:
         super().after_album(album)
-        # 确保进度条显示 100%
-        with self._lock:
-            self._completed_pages = self._total_pages
-            self._render()
-        print()
-        print(f"  ✓ 下载完成 ({self._total_pages}页)")
+        if self._task_id is not None:
+            self._progress.update(self._task_id, completed=album.page_count)
+            self._progress.stop()
+        print(f"  ✓ 下载完成 ({album.page_count}页)")
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        if self._task_id is not None:
+            self._progress.stop()
+        super().__exit__(exc_type, exc_val, exc_tb)
 
 
 def execute_detail(arg: Any) -> dict[str, Any]:

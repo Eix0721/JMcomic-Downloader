@@ -12,6 +12,7 @@ dependencies = [
     "jmcomic",
     "InquirerPy",
     "PyYAML",
+    "rich",
     "simpsave",
 ]
 classifiers = [
@@ -88,3 +89,10 @@ ignore_missing_imports = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.1.0",
+    "pytest>=9.0.3",
+    "pytest-env>=1.6.0",
+]
