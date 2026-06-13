@@ -1,8 +1,7 @@
-from typing import Any
-
 import re
 import time
 import traceback
+from typing import Any
 
 import jmcomic as jm
 
@@ -57,19 +56,18 @@ def jmcomic_download() -> None:
 
 
 def setting() -> None:
-    command = f"{show_status(not cfgs.show_jm_log)}下载日志输出"
     while True:
+        toggle_label = f"{show_status(not cfgs.show_jm_log)}下载日志输出"
+        choices = [toggle_label] + text.SETTING_SECTIONS[1:]
         command = ui.select(
             message="请选择设置项：",
-            choices=text.SETTING_SECTIONS,
-            default=command,
+            choices=choices,
+            default=toggle_label,
         )
 
-        if command == f"{show_status(not cfgs.show_jm_log)}下载日志输出":
+        if command == toggle_label:
             jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = not jm.JmModuleConfig.FLAG_ENABLE_JM_LOG
             cfgs.show_jm_log = cfgs.edit("show_download_log", jm.JmModuleConfig.FLAG_ENABLE_JM_LOG)
-            menu_label = f"{show_status(not cfgs.show_jm_log)}下载日志输出"
-            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = menu_label
             print(f"已{show_status(cfgs.show_jm_log)}下载日志输出。\n")
         elif command == "测试连接":
             print("正在测试当前IP可访问的Jmcomic域名，请稍候...")

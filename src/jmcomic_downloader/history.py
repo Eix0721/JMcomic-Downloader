@@ -1,6 +1,5 @@
-from typing import Any
-
 import datetime
+from typing import Any
 
 import simpsave as ss
 

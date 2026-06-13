@@ -1,7 +1,6 @@
-from typing import Any
-
 import os
 import sys
+from typing import Any
 
 import simpsave as ss
 

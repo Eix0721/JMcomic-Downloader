@@ -39,9 +39,7 @@ def confirm(message: str) -> bool:
     return choice == "确认"
 
 
-def select(
-    message: str, choices: list[str], default: str | None = None
-) -> str:
+def select(message: str, choices: list[str], default: str | None = None) -> str:
     choice = inquirer.select(
         message=message,
         choices=choices,
