@@ -1,3 +1,5 @@
+from typing import Any
+
 import datetime
 
 import simpsave as ss
@@ -7,11 +9,11 @@ from .config import cfgs
 
 
 class DownloadHistory:
-    def __init__(self):
-        self.total_downloads: list[dict] = []
+    def __init__(self) -> None:
+        self.total_downloads: list[dict[str, Any]] = []
         self._loaded = False
 
-    def load(self):
+    def load(self) -> None:
         if self._loaded:
             return
         self._loaded = True
@@ -45,24 +47,24 @@ class DownloadHistory:
                 input("请反馈并手动备份history.yml！按回车键退出程序...")
                 exit(1)
 
-    def _reset(self):
+    def _reset(self) -> None:
         try:
             ss.delete(file="history.yml")
             self.total_downloads = self.edit("total_downloads", [])
         except Exception as err:
             print(f"初始化历史记录文件时发生错误：{type(err).__name__}:{err}")
 
-    def edit(self, key: str, val):
+    def edit(self, key: str, val: Any) -> Any:
         ss.write(key, val, file="history.yml")
         return val
 
-    def save_all(self):
+    def save_all(self) -> None:
         try:
             self.edit("total_downloads", self.total_downloads)
         except Exception as err:
             print(f"保存历史记录时发生错误：{type(err).__name__}:{err}")
 
-    def add(self, details: dict):
+    def add(self, details: dict[str, Any]) -> dict[str, Any]:
         self.total_downloads.append(
             {
                 "jm_id": details.get("id"),
@@ -74,19 +76,19 @@ class DownloadHistory:
         self.save_all()
         return self.total_downloads[-1]
 
-    def print_history(self):
+    def print_history(self) -> None:
         for index, item in enumerate(self.total_downloads):
             print(f"{index + 1}. <{item.get('jm_id')}> - {item.get('title')}")
             print(f"  作者：{item.get('author')}")
             print(f"  下载时间：{item.get('download_time')}")
 
-    def get_latest(self):
+    def get_latest(self) -> dict[str, Any] | None:
         return self.total_downloads[-1] if self.total_downloads else None
 
-    def get_recent(self, limit=10):
+    def get_recent(self, limit: int = 10) -> list[dict[str, Any]]:
         return self.total_downloads[-limit:] if limit > 0 else self.total_downloads
 
-    def clear_all(self):
+    def clear_all(self) -> None:
         self.total_downloads = []
         self.save_all()
 

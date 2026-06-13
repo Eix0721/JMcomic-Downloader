@@ -1,13 +1,15 @@
+from typing import Any
+
 import InquirerPy
 from InquirerPy import inquirer
 
 from . import text
 from .config import cfgs
 
-_current_style = None
+_current_style: Any = None
 
 
-def _get_style():
+def _get_style() -> Any:
     global _current_style
     if _current_style is not None:
         return _current_style
@@ -23,11 +25,11 @@ def _get_style():
     return _current_style
 
 
-def input_text(message) -> str:
+def input_text(message: str) -> str:
     return inquirer.text(message=message, style=_get_style()).execute()
 
 
-def confirm(message) -> bool:
+def confirm(message: str) -> bool:
     choice = inquirer.select(
         message=message,
         choices=["确认", "取消"],
@@ -37,7 +39,9 @@ def confirm(message) -> bool:
     return choice == "确认"
 
 
-def select(message, choices, default=None) -> str:
+def select(
+    message: str, choices: list[str], default: str | None = None
+) -> str:
     choice = inquirer.select(
         message=message,
         choices=choices,
@@ -48,7 +52,7 @@ def select(message, choices, default=None) -> str:
     return choice
 
 
-def set_style():
+def set_style() -> None:
     global _current_style
     style_choice = "默认风格"
 

@@ -1,3 +1,5 @@
+from typing import Any
+
 import re
 import time
 import traceback
@@ -14,7 +16,7 @@ def show_status(arg: bool) -> str:
     return "开启" if arg else "关闭"
 
 
-def execute_detail(arg) -> dict:
+def execute_detail(arg: Any) -> dict[str, Any]:
     return {
         "title": arg.name,
         "id": arg.id,
@@ -25,7 +27,7 @@ def execute_detail(arg) -> dict:
     }
 
 
-def jmcomic_download():
+def jmcomic_download() -> None:
     jm_ids = ui.input_text("请输入要下载的 JMcomic 车号（多个车号用空格分隔）：")
     if not re.fullmatch(r"(\d+\s*)+", jm_ids):
         print("输入的格式有误，请输入仅包含数字的车号，多个车号用空格分隔！")
@@ -54,7 +56,7 @@ def jmcomic_download():
         print("已取消下载任务。")
 
 
-def setting():
+def setting() -> None:
     command = f"{show_status(not cfgs.show_jm_log)}下载日志输出"
     while True:
         command = ui.select(
@@ -89,7 +91,7 @@ def setting():
             print(f'指令 "{command}" 不存在或不可用。')
 
 
-def execute_command(command: str):
+def execute_command(command: str) -> None:
     if command == "功能说明":
         print(text.TEXT["menu"])
     elif command == "下载漫画":
@@ -110,7 +112,7 @@ def execute_command(command: str):
         print(f'指令"{command}"不存在或不可用。')
 
 
-def main():
+def main() -> None:
     cfgs.load()
     history.load()
 

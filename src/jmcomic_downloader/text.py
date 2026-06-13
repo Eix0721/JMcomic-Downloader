@@ -1,11 +1,11 @@
 from .config import cfgs
 
 
-def show_status(arg) -> str:
+def show_status(arg: bool) -> str:
     return "开启" if arg else "关闭"
 
 
-def get_sections(orig_text) -> list[str]:
+def get_sections(orig_text: str) -> list[str]:
     sections = []
     for line in orig_text.splitlines():
         line = line.strip()

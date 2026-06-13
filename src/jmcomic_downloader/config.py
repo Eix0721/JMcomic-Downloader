@@ -1,3 +1,5 @@
+from typing import Any
+
 import os
 import sys
 
@@ -14,12 +16,12 @@ def _get_config_path() -> str:
 
 
 class Configs:
-    def __init__(self):
+    def __init__(self) -> None:
         self.config_file = _get_config_path()
-        self.show_jm_log = True
-        self.current_style_name = "默认风格"
+        self.show_jm_log: bool = True
+        self.current_style_name: str = "默认风格"
 
-    def load(self):
+    def load(self) -> None:
         try:
             ss.has("config_exsist", file=self.config_file)
         except FileNotFoundError:
@@ -38,7 +40,7 @@ class Configs:
             print("将使用默认配置，本次运行修改的设置可能不生效！")
             self.reset()
 
-    def reset(self):
+    def reset(self) -> None:
         try:
             ss.delete(file=self.config_file)
             for key, val in self._defaults().items():
@@ -48,11 +50,11 @@ class Configs:
         except Exception as err:
             print(f"初始化配置文件时发生错误：{type(err).__name__}:{err}")
 
-    def edit(self, key: str, val):
+    def edit(self, key: str, val: Any) -> Any:
         ss.write(key, val, file=self.config_file)
         return val
 
-    def save_all(self):
+    def save_all(self) -> None:
         try:
             self.edit("show_download_log", self.show_jm_log)
             self.edit("current_style_name", self.current_style_name)
@@ -60,7 +62,7 @@ class Configs:
             print(f"保存配置时发生错误：{type(err).__name__}:{err}")
 
     @staticmethod
-    def _defaults():
+    def _defaults() -> dict[str, bool | str]:
         return {
             "config_exsist": True,
             "show_download_log": True,

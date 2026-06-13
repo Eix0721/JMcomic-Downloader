@@ -15,7 +15,7 @@ domain_status_dict = {}
 disable_jm_log()
 
 
-def get_all_domain():
+def get_all_domain() -> set[str]:
     template = "https://jmcmomic.github.io/go/{}.html"
     url_ls = [template.format(i) for i in range(300, 309)]
     domain_set = set()
@@ -38,7 +38,7 @@ def get_all_domain():
     return domain_set
 
 
-def test_domain(domain: str):
+def test_domain(domain: str) -> None:
     client = option.build_jm_client(impl="html", domain_list=[domain])
     status = "ok"
 
@@ -50,7 +50,7 @@ def test_domain(domain: str):
     domain_status_dict[domain] = status
 
 
-def test_all_domains():
+def test_all_domains() -> None:
     try:
         domain_set = get_all_domain()
         print(f"获取到 {len(domain_set)} 个域名，开始测试…")
