@@ -4,8 +4,7 @@ import traceback
 
 import jmcomic as jm
 
-from . import text
-from . import ui
+from . import text, ui
 from .config import cfgs
 from .history import history
 from .test_domain import test_all_domains
@@ -45,7 +44,11 @@ def jmcomic_download():
                 print(f"{type(err).__name__}:{err}\n")
             else:
                 latest = history.add(album_detail)
-                print(f"[{latest.get('download_time')}] <{latest.get('jm_id')}> {latest.get('title')} 下载完成！")
+                msg = (
+                    f"[{latest.get('download_time')}] <{latest.get('jm_id')}> "
+                    f"{latest.get('title')} 下载完成！"
+                )
+                print(msg)
         print(f"所有下载任务已完成，耗时 {time.time() - start_time:.2f} 秒。\n")
     else:
         print("已取消下载任务。")
@@ -63,7 +66,8 @@ def setting():
         if command == f"{show_status(not cfgs.show_jm_log)}下载日志输出":
             jm.JmModuleConfig.FLAG_ENABLE_JM_LOG = not jm.JmModuleConfig.FLAG_ENABLE_JM_LOG
             cfgs.show_jm_log = cfgs.edit("show_download_log", jm.JmModuleConfig.FLAG_ENABLE_JM_LOG)
-            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = f"{show_status(not cfgs.show_jm_log)}下载日志输出"
+            menu_label = f"{show_status(not cfgs.show_jm_log)}下载日志输出"
+            text.SETTING_SECTIONS[text.SETTING_SECTIONS.index(command)] = menu_label
             print(f"已{show_status(cfgs.show_jm_log)}下载日志输出。\n")
         elif command == "测试连接":
             print("正在测试当前IP可访问的Jmcomic域名，请稍候...")
@@ -82,7 +86,7 @@ def setting():
         elif command == "退出设置":
             break
         else:
-            print(f"指令 \"{command}\" 不存在或不可用。")
+            print(f'指令 "{command}" 不存在或不可用。')
 
 
 def execute_command(command: str):
@@ -103,7 +107,7 @@ def execute_command(command: str):
         time.sleep(0.5)
         raise SystemExit(0)
     else:
-        print(f"指令\"{command}\"不存在或不可用。")
+        print(f'指令"{command}"不存在或不可用。')
 
 
 def main():

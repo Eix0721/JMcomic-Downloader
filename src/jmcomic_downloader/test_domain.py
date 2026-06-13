@@ -6,9 +6,9 @@ https://jmcomic.readthedocs.io/zh-cn/latest/tutorial/8_pick_domain/
 
 import traceback
 
-from .config import cfgs
-from jmcomic import JmOption, JmcomicText, JmModuleConfig, disable_jm_log, multi_thread_launcher
+from jmcomic import JmcomicText, JmModuleConfig, JmOption, disable_jm_log, multi_thread_launcher
 
+from .config import cfgs
 
 option = JmOption.default()
 domain_status_dict = {}

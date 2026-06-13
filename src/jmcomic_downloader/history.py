@@ -35,7 +35,11 @@ class DownloadHistory:
             print(f"读取历史记录项时发生错误：{type(err).__name__}:{err}")
             if cfgs.show_jm_log:
                 print(f"错误详情：{err}")
-            if ui.confirm("您可以将问题反馈给开发者并备份history.yml\n也可以重置历史记录文件（不推荐），是否重置？"):
+            confirm_msg = (
+                "您可以将问题反馈给开发者并备份history.yml\n"
+                "也可以重置历史记录文件（不推荐），是否重置？"
+            )
+            if ui.confirm(confirm_msg):
                 self._reset()
             else:
                 input("请反馈并手动备份history.yml！按回车键退出程序...")
@@ -59,12 +63,14 @@ class DownloadHistory:
             print(f"保存历史记录时发生错误：{type(err).__name__}:{err}")
 
     def add(self, details: dict):
-        self.total_downloads.append({
-            "jm_id": details.get("id"),
-            "title": details.get("title"),
-            "author": details.get("author"),
-            "download_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        })
+        self.total_downloads.append(
+            {
+                "jm_id": details.get("id"),
+                "title": details.get("title"),
+                "author": details.get("author"),
+                "download_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            }
+        )
         self.save_all()
         return self.total_downloads[-1]
 

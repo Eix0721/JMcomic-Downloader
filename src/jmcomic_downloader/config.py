@@ -6,7 +6,7 @@ import simpsave as ss
 
 def _get_config_path() -> str:
     """获取配置文件路径"""
-    if getattr(sys, 'frozen', False):
+    if getattr(sys, "frozen", False):
         base_dir = os.path.dirname(sys.executable)
     else:
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

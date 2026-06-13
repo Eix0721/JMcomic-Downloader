@@ -36,7 +36,6 @@ TEXT = {
 **↑/↓ - 选择 | ENTER - 确认
 {"":-^36}\n
 """,
-
     "settings": f"""\n
 {"设置":-^36}
 设置说明：显示该设置说明页
@@ -48,22 +47,21 @@ TEXT = {
 **↑/↓ - 选择 | ENTER - 确认
 {"":-^36}\n
 """,
-
     "about": f"""\n
 感谢您使用JMcomic Downloader！
 本项目由Eix0721开发，遵循MIT开源许可证。
-仓库地址：{LINK['pj']}
+仓库地址：{LINK["pj"]}
 
 本项目使用了以下第三方库：
 **JMComic Crawler Python
 描述：提供漫画下载核心功能
-地址：{LINK['jm']}
+地址：{LINK["jm"]}
 **SimpSave
 描述：配置文件读写工具
-地址：{LINK['SimpSave']}
+地址：{LINK["SimpSave"]}
 **InquirerPy
 描述：构建交互式命令行界面
-地址：{LINK['InquirerPy']}
+地址：{LINK["InquirerPy"]}
 
 感谢以上项目的开发者与贡献者为开源社区作出的奉献！
 JMcomic 也是一款十分优秀的漫画软件，
