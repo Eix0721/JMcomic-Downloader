@@ -1,4 +1,0 @@
-jmcomic
-InquirerPy
-PyYAML
-simpsave

@@ -1,0 +1,29 @@
+[project]
+name = "jmcomic-downloader"
+version = "1.0.0"
+description = "基于 Python 开发的命令行漫画下载工具"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Eix0721" },
+]
+requires-python = ">=3.10"
+dependencies = [
+    "jmcomic",
+    "InquirerPy",
+    "PyYAML",
+    "simpsave",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["libs*"]
+
+[tool.uv]
+package = false
+# 避免被上级 workspace 的 UV_PROJECT_ENVIRONMENT 覆盖
+environment = ".venv"

@@ -43,14 +43,14 @@
    git clone https://github.com/Eix0721/JMcomic-Downloader.git
    ```
 
-2. **安装依赖**
+2. **安装依赖（使用 uv）**
    ```bash
-   pip install -r src\requirements.txt
+   uv sync
    ```
 
 3. **运行程序**
    ```bash
-   python src\jmcomic_downloader.py
+   uv run python src\\jmcomic_downloader.py
    ```
 
 

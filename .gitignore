@@ -1,10 +1,19 @@
+# Python
 *.pyc
 __pycache__/
-.codeaskdata
-src/jmcomicdownloader.spec
-.gitignore
+*.egg-info/
 dist/
 build/
+*.spec
+.pytest_cache/
+
+# uv
+.venv/
+uv.lock
+
+# Project
+.codeaskdata
+config.yml
+history.yml
 *.bat
 build_release.py
-config.yml
