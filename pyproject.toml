@@ -15,15 +15,16 @@ dependencies = [
     "simpsave",
 ]
 
+[project.scripts]
+jmcomic-downloader = "jmcomic_downloader:main"
+
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["libs*"]
+include = ["jmcomic_downloader*"]
 
 [tool.uv]
-package = false
-# 避免被上级 workspace 的 UV_PROJECT_ENVIRONMENT 覆盖
-environment = ".venv"
+package = true

@@ -50,7 +50,11 @@
 
 3. **运行程序**
    ```bash
-   uv run python src\\jmcomic_downloader.py
+   uv run jmcomic-downloader
+   ```
+   或通过 `__main__` 运行：
+   ```bash
+   uv run python -m jmcomic_downloader
    ```
 
 
@@ -75,28 +79,27 @@
 
 ## 📂 项目结构
 
-```
+```text
 Jmcomic-Downloader\
 │  README.md            # 项目说明
 │  .gitignore           # Git 忽略文件
 │  Changelog            # 更新日志
 │  LICENSE              # MIT许可证
+│  pyproject.toml       # 项目配置与依赖
 ├─assets\
 │   │ func_demo_1_20260219.png # 功能演示图
 │   └─ icon.ico                 # 程序图标
 └─src\
-    │  jmcomic_downloader.py  # 程序入口
-    │  requirements.txt       # 依赖列表
-    ├─libs\
-    │   ├─self\               # 项目核心模块
-    │   │   │  core.py        # 主下载逻辑与命令分发
-    │   │   │  ui.py          # 基于 InquirerPy 的交互界面
-    │   │   │  text.py        # 静态文本与多套主题配置
-    │   │   │  config.py      # 配置管理类 (SimpSave封装)
-    │   │   │  history.py     # 历史记录管理类
-    │   │   │  test_domain.py # 域名可用性检测工具
-    │   │   └─ __init__.py
-    └─...
+    │  run.py                 # 启动入口
+    └─jmcomic_downloader\     # 核心包
+        │  __init__.py        # 包入口
+        │  __main__.py        # python -m 入口
+        │  core.py            # 主下载逻辑与命令分发
+        │  ui.py              # 基于 InquirerPy 的交互界面
+        │  text.py            # 静态文本与多套主题配置
+        │  config.py          # 配置管理
+        │  history.py         # 历史记录管理
+        │  test_domain.py     # 域名可用性检测工具
 ```
 
 

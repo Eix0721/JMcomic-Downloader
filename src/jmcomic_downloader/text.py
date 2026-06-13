@@ -1,16 +1,19 @@
-from libs.self.config import cfgs
+from .config import cfgs
+
 
 def show_status(arg) -> str:
     return "开启" if arg else "关闭"
 
-def get_sections (orig_text) ->list[str]:
+
+def get_sections(orig_text) -> list[str]:
     sections = []
     for line in orig_text.splitlines():
-            line = line.strip()
-            if "：" in line:
-                section = line.split("：", 1)[0]
-                sections.append(section)
+        line = line.strip()
+        if "：" in line:
+            section = line.split("：", 1)[0]
+            sections.append(section)
     return sections
+
 
 LINK = {
     "jm": "https://github.com/hect0x7/JMComic-Crawler-Python",
@@ -20,10 +23,9 @@ LINK = {
     "pj": "https://github.com/Eix0721/JMcomic-Downloader",
 }
 
-
 TEXT = {
     "menu": f"""
-\n\n
+\n
 {"功能":-^36}
 功能说明：显示此功能说明页面
 下载漫画：下载JMcomic漫画
@@ -38,7 +40,7 @@ TEXT = {
     "settings": f"""\n
 {"设置":-^36}
 设置说明：显示该设置说明页
-{show_status(not cfgs.SHOW_JM_LOG)}下载日志输出：开关下载日志输出
+{show_status(not cfgs.show_jm_log)}下载日志输出：开关下载日志输出
 切换主题：更改界面主题风格
 测试连接：检测当前IP可访问的Jmcomic域名（测试功能，暂不准确）
 恢复默认：重置所有设置为默认值
@@ -67,12 +69,9 @@ TEXT = {
 JMcomic 也是一款十分优秀的漫画软件，
 关爱禁漫娘，请不要一次性下载过多本子~
 \n
-"""
+""",
 }
 
-
-
-# --- 界面风格配置 ---
 INTERFACE_STYLES = {
     "默认风格": {
         "questionmark": "#e5c07b",
@@ -153,9 +152,8 @@ INTERFACE_STYLES = {
         "highlighted": "fg:#1e1e1e bg:#c792ea",
         "instruction": "fg:#a0a0c0",
         "separator": "fg:#4a4458",
-    }
+    },
 }
-
 
 MENU_SECTIONS = get_sections(TEXT["menu"])
 SETTING_SECTIONS = get_sections(TEXT["settings"])
