@@ -218,13 +218,8 @@ def main() -> None:
     history.load()
 
     choice = "下载漫画"
-    console.print(
-        Panel(
-            "[bold cyan]欢迎使用 JMcomic Downloader！[/bold cyan]",
-            border_style="green",
-            padding=(1, 2),
-        )
-    )
+    console.print(text.show_welcome_banner())
+    console.print()
     console.print(text.show_menu_panel())
     while True:
         try:

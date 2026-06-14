@@ -1,10 +1,67 @@
 from rich.panel import Panel
+from rich.text import Text
+
+import pyfiglet
 
 from .config import cfgs
 
 
 def show_status(arg: bool) -> str:
     return "开启" if arg else "关闭"
+
+
+def _hex_to_rgb(hex_color: str) -> tuple[int, int, int]:
+    """Convert hex color like '#A6D9EE' to (166, 217, 238)."""
+    h = hex_color.lstrip("#")
+    return int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16)
+
+
+def _rgb_to_hex(r: int, g: int, b: int) -> str:
+    """Convert RGB tuple back to hex string."""
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+
+def _interpolate_color(c1: str, c2: str, ratio: float) -> str:
+    """Linearly interpolate between two hex colors (0.0 = c1, 1.0 = c2)."""
+    r1, g1, b1 = _hex_to_rgb(c1)
+    r2, g2, b2 = _hex_to_rgb(c2)
+    return _rgb_to_hex(
+        int(r1 + (r2 - r1) * ratio),
+        int(g1 + (g2 - g1) * ratio),
+        int(b1 + (b2 - b1) * ratio),
+    )
+
+
+def show_welcome_banner() -> Text:
+    """Return gradient ASCII art welcome banner.
+
+    Renders 'JMcomic Downloader' via pyfiglet with a vertical gradient
+    from #A6D9EE (light blue, top) to #0B456A (dark blue, bottom).
+    """
+    fig = pyfiglet.Figlet(font="slant")
+    ascii_text = fig.renderText("JMcomic\nDownloader")
+
+    color_top = "#A6D9EE"
+    color_bottom = "#0B456A"
+
+    lines = ascii_text.rstrip("\n").split("\n")
+    total = max(len(lines) - 1, 1)
+
+    result = Text()
+    for i, line in enumerate(lines):
+        ratio = i / total
+        color = _interpolate_color(color_top, color_bottom, ratio)
+        result.append(Text(line, style=f"bold {color}"))
+        result.append("\n")
+
+    # 副标题：欢迎使用 JMcomic Downloader！
+    mid = _interpolate_color(color_top, color_bottom, 0.5)
+    subtitle = Text("欢迎使用 ", style=f"bold {color_top}")
+    subtitle.append(Text("JMcomic Downloader", style=f"bold {mid}"))
+    subtitle.append(Text(" ！", style=f"bold #F76E3A"))
+    result.append(subtitle)
+
+    return result
 
 
 def get_sections(orig_text: str) -> list[str]:
