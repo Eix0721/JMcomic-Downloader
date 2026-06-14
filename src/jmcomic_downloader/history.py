@@ -2,9 +2,13 @@ import datetime
 from typing import Any
 
 import simpsave as ss
+from rich.console import Console
+from rich.table import Table
 
 from . import ui
 from .config import cfgs
+
+console = Console()
 
 
 class DownloadHistory:
@@ -76,10 +80,24 @@ class DownloadHistory:
         return self.total_downloads[-1]
 
     def print_history(self) -> None:
+        if not self.total_downloads:
+            console.print("[yellow]暂无下载记录。[/yellow]")
+            return
+        table = Table(title="📜 下载历史记录", border_style="cyan")
+        table.add_column("序号", style="dim", justify="center")
+        table.add_column("车号", style="cyan", justify="center")
+        table.add_column("标题", style="green")
+        table.add_column("作者", style="yellow")
+        table.add_column("下载时间", style="magenta")
         for index, item in enumerate(self.total_downloads):
-            print(f"{index + 1}. <{item.get('jm_id')}> - {item.get('title')}")
-            print(f"  作者：{item.get('author')}")
-            print(f"  下载时间：{item.get('download_time')}")
+            table.add_row(
+                str(index + 1),
+                str(item.get("jm_id", "")),
+                str(item.get("title", "")),
+                str(item.get("author", "")),
+                str(item.get("download_time", "")),
+            )
+        console.print(table)
 
     def get_latest(self) -> dict[str, Any] | None:
         return self.total_downloads[-1] if self.total_downloads else None

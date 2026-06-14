@@ -1,3 +1,5 @@
+from rich.panel import Panel
+
 from .config import cfgs
 
 
@@ -155,3 +157,69 @@ INTERFACE_STYLES = {
 
 MENU_SECTIONS = get_sections(TEXT["menu"])
 SETTING_SECTIONS = get_sections(TEXT["settings"])
+
+
+def show_menu_panel() -> Panel:
+    """Return a rich Panel with the main menu options."""
+    content = (
+        "[bold cyan]功能说明：[/bold cyan]显示此功能说明页面\n"
+        "[bold green]下载漫画：[/bold green]下载JMcomic漫画\n"
+        "[bold yellow]设置选项：[/bold yellow]设置文件路径等（开发中）\n"
+        "[bold magenta]历史记录：[/bold magenta]查看下载历史记录\n"
+        "[bold blue]关于项目：[/bold blue]显示关于页面\n"
+        "[bold red]退出程序：[/bold red]退出该程序\n\n"
+        "[dim]** ↑/↓ - 选择 | ENTER - 确认[/dim]"
+    )
+    return Panel(
+        content,
+        title="📋 功能菜单",
+        border_style="cyan",
+        padding=(1, 2),
+    )
+
+
+def show_settings_panel() -> Panel:
+    """Return a rich Panel with the settings description."""
+    content = (
+        f"[bold]设置说明：[/bold]显示该设置说明页\n"
+        f"{show_status(not cfgs.show_jm_log)}[bold]下载日志输出：[/bold]开关下载日志输出\n"
+        f"[bold yellow]切换主题：[/bold yellow]更改界面主题风格\n"
+        f"[bold]测试连接：[/bold]检测当前IP可访问的Jmcomic域名（测试功能，暂不准确）\n"
+        f"[bold red]恢复默认：[/bold red]重置所有设置为默认值\n"
+        f"[bold]退出设置：[/bold]返回主菜单\n\n"
+        f"[dim]** ↑/↓ - 选择 | ENTER - 确认[/dim]"
+    )
+    return Panel(
+        content,
+        title="⚙️ 设置选项",
+        border_style="yellow",
+        padding=(1, 2),
+    )
+
+
+def show_about_panel() -> Panel:
+    """Return a rich Panel with project about information."""
+    content = (
+        f"[bold]感谢您使用 [cyan]JMcomic Downloader[/cyan]！[/bold]\n\n"
+        f"本项目由 [bold yellow]Eix0721[/bold yellow] 开发，遵循 [bold]MIT[/bold] 开源许可证。\n"
+        f"仓库地址：{LINK['pj']}\n\n"
+        f"[underline]本项目使用了以下第三方库：[/underline]\n\n"
+        f"[bold]** JMComic Crawler Python[/bold]\n"
+        f"   描述：提供漫画下载核心功能\n"
+        f"   地址：{LINK['jm']}\n\n"
+        f"[bold]** SimpSave[/bold]\n"
+        f"   描述：配置文件读写工具\n"
+        f"   地址：{LINK['SimpSave']}\n\n"
+        f"[bold]** InquirerPy[/bold]\n"
+        f"   描述：构建交互式命令行界面\n"
+        f"   地址：{LINK['InquirerPy']}\n\n"
+        f"[dim italic]感谢以上项目的开发者与贡献者为开源社区作出的奉献！\n"
+        f"JMcomic 也是一款十分优秀的漫画软件，\n"
+        f"关爱禁漫娘，请不要一次性下载过多本子~[/dim italic]"
+    )
+    return Panel(
+        content,
+        title="📖 关于项目",
+        border_style="magenta",
+        padding=(1, 2),
+    )

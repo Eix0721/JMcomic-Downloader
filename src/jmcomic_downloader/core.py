@@ -6,6 +6,8 @@ from types import TracebackType
 from typing import Any
 
 import jmcomic as jm
+from rich.console import Console
+from rich.panel import Panel
 from rich.progress import (
     BarColumn,
     MofNCompleteColumn,
@@ -19,6 +21,8 @@ from . import text, ui
 from .config import cfgs
 from .history import history
 from .test_domain import test_all_domains
+
+console = Console()
 
 
 def show_status(arg: bool) -> str:
@@ -99,7 +103,36 @@ def jmcomic_download() -> None:
         print("输入的格式有误，请输入仅包含数字的车号，多个车号用空格分隔！")
         return
 
-    if ui.confirm(f"即将下载：{jm_ids}，是否继续？"):
+    # 预获取所有车号的漫画信息
+    id_list = jm_ids.split()
+    client = jm.JmModuleConfig.option_class().default().build_jm_client()
+    album_details: list[Any] = []
+    for jm_id in id_list:
+        try:
+            album = client.get_album_detail(jm_id)
+            album_details.append(album)
+        except Exception as err:
+            print(f"\n**获取车号 {jm_id} 信息时发生错误:")
+            print(f"{type(err).__name__}:{err}\n")
+            return
+
+    # 使用 rich Panel 展示专辑详情
+    for album in album_details:
+        authors = ", ".join(str(a) for a in album.authors)
+        info_text = (
+            f"[bold]标题:[/bold] {album.name}\n"
+            f"[bold]作者:[/bold] {authors}\n"
+            f"[bold]总页数:[/bold] {album.page_count}\n"
+            f"[bold]章节数:[/bold] {len(album)}"
+        )
+        panel = Panel(
+            info_text,
+            title=f"📖 漫画信息 — 车号 {album.id}",
+            border_style="cyan",
+        )
+        console.print(panel)
+
+    if ui.confirm("是否开始下载？"):
         downloader_kwargs: dict[str, Any] = (
             {"downloader": ProgressDownloader}
             if not cfgs.show_jm_log
@@ -107,7 +140,7 @@ def jmcomic_download() -> None:
         )
 
         start_time = time.time()
-        for jm_id in jm_ids.split():
+        for jm_id in id_list:
             try:
                 album_detail = execute_detail(
                     jm.download_album(jm_id, **downloader_kwargs)[0]
@@ -154,7 +187,7 @@ def setting() -> None:
         elif command == "切换主题":
             ui.set_style()
         elif command == "设置说明":
-            print(f"{text.TEXT['settings']}\n")
+            console.print(text.show_settings_panel())
         elif command == "退出设置":
             break
         else:
@@ -163,7 +196,7 @@ def setting() -> None:
 
 def execute_command(command: str) -> None:
     if command == "功能说明":
-        print(text.TEXT["menu"])
+        console.print(text.show_menu_panel())
     elif command == "下载漫画":
         jmcomic_download()
     elif command == "设置选项":
@@ -171,9 +204,7 @@ def execute_command(command: str) -> None:
     elif command == "历史记录":
         history.print_history()
     elif command == "关于项目":
-        for ln in text.TEXT["about"].splitlines():
-            print(ln, flush=True)
-            time.sleep(0.03)
+        console.print(text.show_about_panel())
     elif command == "退出程序":
         print("程序即将退出")
         time.sleep(0.5)
@@ -187,7 +218,14 @@ def main() -> None:
     history.load()
 
     choice = "下载漫画"
-    print(f"欢迎使用 JMcomic Downloader！\n{text.TEXT['menu']}")
+    console.print(
+        Panel(
+            "[bold cyan]欢迎使用 JMcomic Downloader！[/bold cyan]",
+            border_style="green",
+            padding=(1, 2),
+        )
+    )
+    console.print(text.show_menu_panel())
     while True:
         try:
             choice = ui.select(
