@@ -1,4 +1,5 @@
 import re
+import threading
 import time
 import traceback
 from types import TracebackType
@@ -38,17 +39,25 @@ class ProgressDownloader(jm.JmDownloader):  # type: ignore[misc]
             transient=True,
         )
         self._task_id: TaskID | None = None
+        self._album_pages = 0
+        self._lock = threading.Lock()
 
     def before_album(self, album: jm.JmAlbumDetail) -> None:
         super().before_album(album)
+        self._album_pages = 0
         self._progress.start()
         self._task_id = self._progress.add_task(
             f"正在下载: 《{album.name}》",
-            total=album.page_count,
+            total=None,
         )
 
     def before_photo(self, photo: jm.JmPhotoDetail) -> None:
         super().before_photo(photo)
+        # 累加每章的真实页数，实时更新总量
+        with self._lock:
+            self._album_pages += len(photo)
+        if self._task_id is not None:
+            self._progress.update(self._task_id, total=self._album_pages)
 
     def after_image(self, image: jm.JmImageDetail, img_save_path: str) -> None:
         super().after_image(image, img_save_path)
@@ -58,9 +67,9 @@ class ProgressDownloader(jm.JmDownloader):  # type: ignore[misc]
     def after_album(self, album: jm.JmAlbumDetail) -> None:
         super().after_album(album)
         if self._task_id is not None:
-            self._progress.update(self._task_id, completed=album.page_count)
+            self._progress.update(self._task_id, completed=self._album_pages)
             self._progress.stop()
-        print(f"  ✓ 下载完成 ({album.page_count}页)")
+        print(f"  ✓ 下载完成 ({self._album_pages}页)")
 
     def __exit__(
         self,
