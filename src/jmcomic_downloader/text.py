@@ -32,17 +32,17 @@ def _interpolate_color(c1: str, c2: str, ratio: float) -> str:
     )
 
 
-def show_welcome_banner() -> Text:
+def show_welcome_banner(font="slant") -> Text:
     """Return gradient ASCII art welcome banner.
 
     Renders 'JMcomic Downloader' via pyfiglet with a vertical gradient
     from #A6D9EE (light blue, top) to #0B456A (dark blue, bottom).
     """
-    fig = pyfiglet.Figlet(font="slant")
+    fig = pyfiglet.Figlet(font)
     ascii_text = fig.renderText("JMcomic\nDownloader")
 
-    color_top = "#A6D9EE"
-    color_bottom = "#0B456A"
+    color_top = "#5D92B6"
+    color_bottom = "#E78964"
 
     lines = ascii_text.rstrip("\n").split("\n")
     total = max(len(lines) - 1, 1)
@@ -53,13 +53,6 @@ def show_welcome_banner() -> Text:
         color = _interpolate_color(color_top, color_bottom, ratio)
         result.append(Text(line, style=f"bold {color}"))
         result.append("\n")
-
-    # 副标题：欢迎使用 JMcomic Downloader！
-    mid = _interpolate_color(color_top, color_bottom, 0.5)
-    subtitle = Text("欢迎使用 ", style=f"bold {color_top}")
-    subtitle.append(Text("JMcomic Downloader", style=f"bold {mid}"))
-    subtitle.append(Text(" ！", style=f"bold #F76E3A"))
-    result.append(subtitle)
 
     return result
 
