@@ -7,6 +7,7 @@ from typing import Any
 import jmcomic as jm
 from rich.progress import (
     BarColumn,
+    MofNCompleteColumn,
     Progress,
     TaskID,
     TextColumn,
@@ -31,7 +32,8 @@ class ProgressDownloader(jm.JmDownloader):  # type: ignore[misc]
         self._progress = Progress(
             TextColumn("{task.description}"),
             BarColumn(),
-            TextColumn("{task.completed:.0f}/{task.total:.0f}页"),
+            MofNCompleteColumn(),
+            TextColumn("页"),
             TimeElapsedColumn(),
             transient=True,
         )
